@@ -258,8 +258,6 @@ if (isset($_GET['button'])) {
                 dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block'; 
             });
         });
-
-       
     </script>
 </body>
 </html>
