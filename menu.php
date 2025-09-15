@@ -20,8 +20,8 @@ if (isset($_GET['button'])) {
 
      if (isset($proyectos_antiguos[$_GET['button']])) {
         header('Location: ' . $proyectos_antiguos[$_GET['button']]);
-    } elseif (isset($nuevos_proyectos[$_GET['button']])) {
-        header('Location: ' . $nuevos_proyectos[$_GET['button']]);
+    } elseif (isset($proyectos_nuevos[$_GET['button']])) {
+        header('Location: ' . $proyectos_nuevos[$_GET['button']]);
     } else {
         header('Location: tabs.php');
     }
@@ -255,8 +255,8 @@ if (isset($_GET['button'])) {
                             <div class="projects" id="knee_antDropdown">
                                 <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal">Longitudinal</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal">Transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea">Tróclea transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea">Tróclea longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea">Tr&oacute;clea transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea">Tr&oacute;clea longitudinal</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal">Parasagittal</a>
                             </div>
                         </div>
@@ -273,7 +273,7 @@ if (isset($_GET['button'])) {
                             <div class="projects" id="knee_latDropdown">
                                 <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla">Cintilla iliotibial</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE">LLE</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps">Bíceps</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps">B&iacute;ceps</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal">Menisco transversal</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal">Menisco longitudinal</a>
                             </div>
