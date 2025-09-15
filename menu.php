@@ -15,7 +15,11 @@ if (isset($_GET['button'])) {
     ];
     //Aplicaciones Flask, DRAW futuros. Todos en un mismo puerto con diferente header:
      $proyectos_nuevos = [
-        'foot' => $host . ':5004/foot',
+        'knee_anterior_longitudinal' => $host . ':5004/knee_anterior_longitudinal',
+        'knee_anterior_transversal' => $host . ':5004/knee_anterior_transversal',
+        'knee_anterior_transverse_trochlea' => $host . ':5004/knee_anterior_transverse_trochlea',
+        'knee_anterior_longitudinal_trochlea' => $host . ':5004/knee_anterior_longitudinal_trochlea',
+        'knee_anterior_parasagittal' => $host . ':5004/knee_anterior_parasagittal'
     ];
 
      if (isset($proyectos_antiguos[$_GET['button']])) {
