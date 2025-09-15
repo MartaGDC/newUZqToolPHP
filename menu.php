@@ -52,7 +52,7 @@ if (isset($_GET['button'])) {
             font-size: 110px;
             font-weight: bold;
             margin: 100px;
-            color = #1A1A1A;
+            color: #1A1A1A;
         }
         .first-two{
             color: #333333;
@@ -139,7 +139,7 @@ if (isset($_GET['button'])) {
             margin-top: 10px;
             position: relative;
             z-index: 2;
-        }.
+        }
         .subdropdown-container > .button {
             position: relative;
             z-index: 3;
@@ -160,6 +160,48 @@ if (isset($_GET['button'])) {
             padding-bottom: 10px;
             padding-top:40px;
         }
+
+        .projects-container {
+            margin-top: 10px;
+            position: relative;
+            z-index: 5;
+        }
+        .projects-container > .button {
+            position: relative;
+            z-index: 6;
+            width: 200px;
+        }
+        .projects-container:nth-child(3) {
+            z-index: 3;
+        }
+        .projects-container:nth-child(4) {
+            z-index: 2;
+        }
+        .projects-container:nth-child(5) {
+            z-index: 1;
+        }
+        .projects-container:nth-child(6) {
+            z-index: 0;
+        }
+
+        .projects {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px;
+            padding-bottom: 10px;
+            padding-top:40px;
+        }
+        .projects > .button {
+            position: relative;
+            z-index: 9;
+        }
+
 
     </style>
 </head>
@@ -201,8 +243,59 @@ if (isset($_GET['button'])) {
                 <div class="subdropdown-container">
                     <button class="button draw-option" data-target="new" type="button">New projects</button>
                     <div class="subdropdown" id="drawNewDropdown">
-                        <a class="button" href="<?= $host ?>:5004/foot">Foot</a>
-                        <a class="button" href="#">...</a>
+                        <div class="projects-container">
+                            <a class="button project-option" href="<?= $host ?>:5004/foot">Foot</a>
+                            <div class="projects">
+
+                            </div>
+                        </div>
+
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="knee_ant">Rodilla Anterior</a>
+                            <div class="projects" id="knee_antDropdown">
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal">Longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal">Transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea">Tróclea transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea">Tróclea longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal">Parasagittal</a>
+                            </div>
+                        </div>
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="knee_medial">Rodilla Medial</a>
+                            <div class="projects" id="knee_medialDropdown">
+                                <a class="button" href="<?= $host ?>:5004/knee_medial_LLI">LLI</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal">Meniscal transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal">Meniscal longitudinal</a>
+                            </div>
+                        </div>
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="knee_lat">Rodilla Lateral</a>
+                            <div class="projects" id="knee_latDropdown">
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla">Cintilla iliotibial</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE">LLE</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps">Bíceps</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal">Menisco transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal">Menisco longitudinal</a>
+                            </div>
+                        </div>
+
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="knee_post">Rodilla Posterior</a>
+                            <div class="projects" id="knee_postDropdown">
+                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial">Transversal medial</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central">Transversal central</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral">Transversal lateral</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial">Longitudinal medial</a>
+                                <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral">Longitudinal lateral</a>
+                            </div>
+                        </div>
+
+                        <div class="projects-container">
+                            <a class="button project-option">Mano</a>
+                            <div class="projects">
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>            
@@ -236,10 +329,11 @@ if (isset($_GET['button'])) {
         desplgarDropdown(drawBtn, drawDropdown);
 
         document.addEventListener('click', function(e) {
-            const isClickInside = e.target.closest('.dropdown') || e.target.closest('.subdropdown');
+            const isClickInside = e.target.closest('.dropdown') || e.target.closest('.subdropdown') || e.target.closest('.projects');
             if (!isClickInside) {
                 document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
                 document.querySelectorAll('.subdropdown').forEach(s => s.style.display = 'none');
+                document.querySelectorAll('.projects').forEach(p => p.style.display = 'none');
             }
         });
 
@@ -251,13 +345,32 @@ if (isset($_GET['button'])) {
                 const target = opt.dataset.target;
                 const dropdownId = `draw${target.charAt(0).toUpperCase() + target.slice(1)}Dropdown`;
                 const dropdown = document.getElementById(dropdownId);
-                const todosSubdropdowns = document.querySelectorAll('.subdropdown');
+                const todosSubdropdowns = document.querySelectorAll('.subdropdown');                
                 todosSubdropdowns.forEach(sd => {
                     if(sd !== dropdown) sd.style.display = 'none';
                 });
                 dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block'; 
             });
         });
+        
+        //Funcion para proyetos
+        document.querySelectorAll('.button.project-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const target = option.dataset.target;
+                const projectId = `${target}Dropdown`;
+                const projectDropdown = document.getElementById(projectId);
+                const todosProjectDropdowns =document.querySelectorAll('.projects');
+                todosProjectDropdowns.forEach(pd => {
+                    if(pd != projectDropdown) pd.style.display = 'none';
+                })
+                projectDropdown.style.display = (projectDropdown.style.display==='block')? 'none' : 'block';
+            })
+        })
+
+
+
     </script>
 </body>
 </html>
