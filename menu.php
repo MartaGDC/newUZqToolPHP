@@ -171,16 +171,16 @@ if (isset($_GET['button'])) {
             z-index: 6;
             width: 200px;
         }
-        .projects-container:nth-child(3) {
+        .projects-container:nth-child(2) {
             z-index: 3;
         }
-        .projects-container:nth-child(4) {
+        .projects-container:nth-child(3) {
             z-index: 2;
         }
-        .projects-container:nth-child(5) {
+        .projects-container:nth-child(4) {
             z-index: 1;
         }
-        .projects-container:nth-child(6) {
+        .projects-container:nth-child(5) {
             z-index: 0;
         }
 
@@ -243,12 +243,6 @@ if (isset($_GET['button'])) {
                 <div class="subdropdown-container">
                     <button class="button draw-option" data-target="new" type="button">New projects</button>
                     <div class="subdropdown" id="drawNewDropdown">
-                        <div class="projects-container">
-                            <a class="button project-option" href="<?= $host ?>:5004/foot">Foot</a>
-                            <div class="projects">
-
-                            </div>
-                        </div>
 
                         <div class="projects-container">
                             <a class="button project-option" data-target="knee_ant">Rodilla Anterior</a>
@@ -290,12 +284,6 @@ if (isset($_GET['button'])) {
                             </div>
                         </div>
 
-                        <div class="projects-container">
-                            <a class="button project-option">Mano</a>
-                            <div class="projects">
-                                
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>            
