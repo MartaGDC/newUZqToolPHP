@@ -181,23 +181,29 @@ if (isset($_GET['button'])) {
         .projects-container {
             margin-top: 10px;
             position: relative;
-            z-index: 5;
+            z-index: 7;
         }
         .projects-container > .button {
             position: relative;
-            z-index: 6;
+            z-index: 8;
             width: 200px;
         }
         .projects-container:nth-child(2) {
-            z-index: 3;
+            z-index: 5;
         }
         .projects-container:nth-child(3) {
-            z-index: 2;
+            z-index: 4;
         }
         .projects-container:nth-child(4) {
-            z-index: 1;
+            z-index: 3;
         }
         .projects-container:nth-child(5) {
+            z-index: 2;
+        }
+        .projects-container:nth-child(6) {
+            z-index: 1;
+        }
+        .projects-container:nth-child(7) {
             z-index: 0;
         }
 
@@ -260,6 +266,17 @@ if (isset($_GET['button'])) {
                 <div class="subdropdown-container">
                     <button class="button draw-option" data-target="new" type="button">New projects</button>
                     <div class="subdropdown" id="drawNewDropdown">
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="foot">Pie</a>
+                            <div class="projects" id="footDropdown">
+                                <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?user=<?= urlencode($_SESSION['User']) ?>">Fascia plantar longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?user=<?= urlencode($_SESSION['User']) ?>">TFascia plantar transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?user=<?= urlencode($_SESSION['User']) ?>">Placa volar longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_transversal_tarsal?user=<?= urlencode($_SESSION['User']) ?>">T&uacute;nel tarsiano transversal</a>
+                            </div>
+                        </div>
 
                         <div class="projects-container">
                             <a class="button project-option" data-target="knee_ant">Rodilla Anterior</a>
@@ -289,7 +306,6 @@ if (isset($_GET['button'])) {
                                 <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Menisco longitudinal</a>
                             </div>
                         </div>
-
                         <div class="projects-container">
                             <a class="button project-option" data-target="knee_post">Rodilla Posterior</a>
                             <div class="projects" id="knee_postDropdown">
@@ -298,6 +314,28 @@ if (isset($_GET['button'])) {
                                 <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Transversal lateral</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal medial</a>
                                 <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal lateral</a>
+                            </div>
+                        </div>
+
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="hand">Mano</a>
+                            <div class="projects" id="handDropdown">
+                                <a class="button" href="<?= $host ?>:5004/hand_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal</a>
+                                <a class="button" href="<?= $host ?>:5004/hand_transversal?user=<?= urlencode($_SESSION['User']) ?>">Transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/hand_radial?user=<?= urlencode($_SESSION['User']) ?>">Radial</a>
+                                <a class="button" href="<?= $host ?>:5004/hand_cubital?user=<?= urlencode($_SESSION['User']) ?>">Cubital</a>
+                                <a class="button" href="<?= $host ?>:5004/hand_dorsal?user=<?= urlencode($_SESSION['User']) ?>">Dorsal</a>
+                            </div>
+                        </div>
+
+                        <div class="projects-container">
+                            <a class="button project-option" data-target="abd">Abdomino perineal</a>
+                            <div class="projects" id="abdDropdown">
+                                <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?user=<?= urlencode($_SESSION['User']) ?>">Transversal l&iacute;nea media</a>
+                                <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?user=<?= urlencode($_SESSION['User']) ?>">Transversal recto</a>
+                                <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?user=<?= urlencode($_SESSION['User']) ?>">Transversal spiegel</a>
+                                <a class="button" href="<?= $host ?>:5004/abd_transversal_toracolum?user=<?= urlencode($_SESSION['User']) ?>">Transversal fascia toracolumbar</a>
+                                <a class="button" href="<?= $host ?>:5004/abd_suelo_pelvico?user=<?= urlencode($_SESSION['User']) ?>">Suelo p&eacute;lvico</a>
                             </div>
                         </div>
 
