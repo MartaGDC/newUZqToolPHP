@@ -162,7 +162,7 @@ if (isset($_GET['button'])) {
             z-index: 3;
         }
         .subdropdown-container:nth-child(2) {
-            z-index: 0; /* New más abajo que el subdropdown de Old */
+            z-index: 1; /* New más abajo que el subdropdown de Old */
         }
         .subdropdown {
             position: absolute;
@@ -172,7 +172,7 @@ if (isset($_GET['button'])) {
             display: none;
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1;
+            z-index: 2;
             padding: 10px;
             padding-bottom: 10px;
             padding-top:40px;
@@ -216,11 +216,52 @@ if (isset($_GET['button'])) {
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             z-index: 1;
-            padding: 10px;
+            padding: 15px;
             padding-bottom: 10px;
             padding-top:40px;
         }
         .projects > .button {
+            position: relative;
+            z-index: 9;
+        }
+
+        .subprojects-container {
+            margin-top: 10px;
+            position: relative;
+            z-index: 7;
+        }
+        .subprojects-container > .button {
+            position: relative;
+            z-index: 8;
+            width: 200px;
+        }
+        .subprojects-container:nth-child(2) {
+            z-index: 5;
+        }
+        .subprojects-container:nth-child(3) {
+            z-index: 4;
+        }
+        .subprojects-container:nth-child(4) {
+            z-index: 3;
+        }
+        .subprojects-container:nth-child(5) {
+            z-index: 2;
+        }
+
+        .subprojects {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px;
+            padding-bottom: 10px;
+            padding-top:40px;
+        }
+        .subprojects > .button {
             position: relative;
             z-index: 9;
         }
@@ -270,7 +311,7 @@ if (isset($_GET['button'])) {
                             <a class="button project-option" data-target="foot">Pie</a>
                             <div class="projects" id="footDropdown">
                                 <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?user=<?= urlencode($_SESSION['User']) ?>">Fascia plantar longitudinal</a>
-                                <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?user=<?= urlencode($_SESSION['User']) ?>">TFascia plantar transversal</a>
+                                <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?user=<?= urlencode($_SESSION['User']) ?>">Fascia plantar transversal</a>
                                 <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles longitudinal</a>
                                 <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles transversal</a>
                                 <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?user=<?= urlencode($_SESSION['User']) ?>">Placa volar longitudinal</a>
@@ -279,41 +320,46 @@ if (isset($_GET['button'])) {
                         </div>
 
                         <div class="projects-container">
-                            <a class="button project-option" data-target="knee_ant">Rodilla Anterior</a>
-                            <div class="projects" id="knee_antDropdown">
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?user=<?= urlencode($_SESSION['User']) ?>">Transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea longitudinal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?user=<?= urlencode($_SESSION['User']) ?>">Parasagital</a>
-                            </div>
-                        </div>
-                        <div class="projects-container">
-                            <a class="button project-option" data-target="knee_medial">Rodilla Medial</a>
-                            <div class="projects" id="knee_medialDropdown">
-                                <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?user=<?= urlencode($_SESSION['User']) ?>">LLI</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal longitudinal</a>
-                            </div>
-                        </div>
-                        <div class="projects-container">
-                            <a class="button project-option" data-target="knee_lat">Rodilla Lateral</a>
-                            <div class="projects" id="knee_latDropdown">
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?user=<?= urlencode($_SESSION['User']) ?>">Cintilla iliotibial</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?user=<?= urlencode($_SESSION['User']) ?>">LLE</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?user=<?= urlencode($_SESSION['User']) ?>">B&iacute;ceps</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?user=<?= urlencode($_SESSION['User']) ?>">Menisco transversal</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Menisco longitudinal</a>
-                            </div>
-                        </div>
-                        <div class="projects-container">
-                            <a class="button project-option" data-target="knee_post">Rodilla Posterior</a>
-                            <div class="projects" id="knee_postDropdown">
-                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?user=<?= urlencode($_SESSION['User']) ?>">Transversal medial</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?user=<?= urlencode($_SESSION['User']) ?>">Transversal central</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Transversal lateral</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal medial</a>
-                                <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal lateral</a>
+                            <a class="button project-option" data-target="knee">Rodilla</a>
+                            <div class="projects" id="kneeDropdown">
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target = "knee_ant">Rodilla Anterior</a>
+                                    <div class="subprojects" id="knee_antDropdown">
+                                        <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?user=<?= urlencode($_SESSION['User']) ?>">Transversal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea transversal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea longitudinal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?user=<?= urlencode($_SESSION['User']) ?>">Parasagital</a>
+                                    </div>
+                                </div>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target = "knee_medial">Rodilla Medial</a>
+                                    <div class="subprojects" id="knee_medialDropdown">
+                                        <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?user=<?= urlencode($_SESSION['User']) ?>">LLI</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal transversal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal longitudinal</a>
+                                    </div>
+                                </div>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target = "knee_lat">Rodilla Lateral</a>
+                                    <div class="subprojects" id="knee_latDropdown">
+                                        <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?user=<?= urlencode($_SESSION['User']) ?>">Cintilla iliotibial</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?user=<?= urlencode($_SESSION['User']) ?>">LLE</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?user=<?= urlencode($_SESSION['User']) ?>">B&iacute;ceps</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?user=<?= urlencode($_SESSION['User']) ?>">Menisco transversal</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Menisco longitudinal</a>
+                                    </div>
+                                </div>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target = "knee_post">Rodilla Posterior</a>
+                                    <div class="subprojects" id="knee_postDropdown">
+                                        <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?user=<?= urlencode($_SESSION['User']) ?>">Transversal medial</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?user=<?= urlencode($_SESSION['User']) ?>">Transversal central</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Transversal lateral</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal medial</a>
+                                        <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal lateral</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -405,6 +451,22 @@ if (isset($_GET['button'])) {
                 const projectId = `${target}Dropdown`;
                 const projectDropdown = document.getElementById(projectId);
                 const todosProjectDropdowns =document.querySelectorAll('.projects');
+                todosProjectDropdowns.forEach(pd => {
+                    if(pd != projectDropdown) pd.style.display = 'none';
+                })
+                projectDropdown.style.display = (projectDropdown.style.display==='block')? 'none' : 'block';
+            })
+        })
+
+        //Funcion para subproyectos (por ahora de rodilla)
+        document.querySelectorAll('.button.subproject-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const target = option.dataset.target;
+                const projectId = `${target}Dropdown`;
+                const projectDropdown = document.getElementById(projectId);
+                const todosProjectDropdowns =document.querySelectorAll('.subprojects');
                 todosProjectDropdowns.forEach(pd => {
                     if(pd != projectDropdown) pd.style.display = 'none';
                 })
