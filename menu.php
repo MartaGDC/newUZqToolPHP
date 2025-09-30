@@ -13,32 +13,10 @@ if (isset($_GET['button'])) {
         'nervelong_identification' => $host . ':5001/',
         'nervetrans_identification' => $host . ':5002/',
     ];
-    //Aplicaciones Flask, DRAW futuros. Todos en un mismo puerto con diferente header:
-     $proyectos_nuevos = [
-        'knee_anterior_longitudinal' => $host . ':5004/knee_anterior_longitudinal',
-        'knee_anterior_transversal' => $host . ':5004/knee_anterior_transversal',
-        'knee_anterior_transverse_trochlea' => $host . ':5004/knee_anterior_transverse_trochlea',
-        'knee_anterior_longitudinal_trochlea' => $host . ':5004/knee_anterior_longitudinal_trochlea',
-        'knee_anterior_parasagittal' => $host . ':5004/knee_anterior_parasagittal',
-        'knee_medial_LLI' => $host . ':5004/knee_medial_LLI',
-        'knee_medial_meniscal_transversal' => $host . ':5004/knee_medial_meniscal_transversal',
-        'knee_medial_meniscal_longitudinal' => $host . ':5004/knee_medial_meniscal_longitudinal',
-        'knee_lateral_cintilla' => $host . ':5004/knee_lateral_cintilla',
-        'knee_lateral_LLE' => $host . ':5004/knee_lateral_LLE',
-        'knee_lateral_biceps' => $host . ':5004/knee_lateral_biceps',
-        'knee_lateral_menisco_transversal' => $host . ':5004/knee_lateral_menisco_transversal',
-        'knee_lateral_menisco_longitudinal' => $host . ':5004/knee_lateral_menisco_longitudinal',
-        'knee_posterior_transversal_medial' => $host . ':5004/knee_posterior_transversal_medial',
-        'knee_posterior_transversal_central' => $host . ':5004/knee_posterior_transversal_central',
-        'knee_posterior_transversal_lateral' => $host . ':5004/knee_posterior_transversal_lateral',
-        'knee_posterior_logitudinal_medial' => $host . ':5004/knee_posterior_logitudinal_medial',
-        'knee_posterior_longitudinal_lateral' => $host . ':5004/knee_posterior_longitudinal_lateral'
-    ];
+    //Aplicaciones Flask, DRAW futuros. Todos en un mismo puerto con diferente header. El href se definirá en el propio boton
 
-     if (isset($proyectos_antiguos[$_GET['button']])) {
+    if (isset($proyectos_antiguos[$_GET['button']])) {
         header('Location: ' . $proyectos_antiguos[$_GET['button']]);
-    } elseif (isset($proyectos_nuevos[$_GET['button']])) {
-        header('Location: ' . $proyectos_nuevos[$_GET['button']]);
     } else {
         header('Location: tabs.php');
     }
@@ -307,6 +285,10 @@ if (isset($_GET['button'])) {
                 <div class="subdropdown-container">
                     <button class="button draw-option" data-target="new" type="button">New projects</button>
                     <div class="subdropdown" id="drawNewDropdown">
+                        <div class="projects-container">
+                            <a class="button" href="<?= $host ?>:5004/tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
+                        </div>
+
                         <div class="projects-container">
                             <a class="button project-option" data-target="foot">Pie</a>
                             <div class="projects" id="footDropdown">
