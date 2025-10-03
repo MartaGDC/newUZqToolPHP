@@ -285,8 +285,12 @@ if (isset($_GET['button'])) {
                 <div class="subdropdown-container">
                     <button class="button draw-option" data-target="new" type="button">New projects</button>
                     <div class="subdropdown" id="drawNewDropdown">
+                        
                         <div class="projects-container">
-                            <a class="button" href="<?= $host ?>:5004/tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
+                            <a class="button project-option" data-target="base">Bases</a>
+                            <div class="projects" id="baseDropdown">
+                                <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
+                            </div>
                         </div>
 
                         <div class="projects-container">
