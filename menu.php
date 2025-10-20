@@ -281,7 +281,7 @@ if (isset($_GET['button'])) {
                         <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
                     </div>
                 </div>
-                <?php if ($user == "mmu" || $user == "jpr" || $user == "ebg" || $user == "iac" || $user == "sba" || $user == "jrs" || $user == "cldc"): ?>
+                <?php if ($user == "mmu" || $user == "jpr"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="foot">Pie</a>
                         <div class="projects" id="footDropdown">
@@ -294,7 +294,7 @@ if (isset($_GET['button'])) {
                         </div>
                     </div>
                 <?php endif; ?>
-                <?php if ($user == "mmu" || $user == "pfm" || $user == "ebg" || $user == "iac" || $user == "sba" || $user == "jrs" || $user == "cldc"): ?>
+                <?php if ($user == "mmu" || $user == "pfm"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="knee">Rodilla</a>
                         <div class="projects" id="kneeDropdown">
@@ -340,7 +340,7 @@ if (isset($_GET['button'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($user == "mmu" || $user == "ebg" || $user == "iac" || $user == "sba" || $user == "jrs" || $user == "cldc"): ?>
+                <?php if ($user == "mmu" || $user == "pfm"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="hand">Mano</a>
                         <div class="projects" id="handDropdown">
@@ -353,7 +353,7 @@ if (isset($_GET['button'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($user == "mmu" || $user == "ppa" || $user == "ebg" || $user == "iac" || $user == "sba" || $user == "jrs" || $user == "cldc"): ?>
+                <?php if ($user == "mmu" || $user == "ppa"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="abd">Abdomino perineal</a>
                         <div class="projects" id="abdDropdown">
