@@ -1,33 +1,68 @@
 <?php error_reporting(E_ALL); ?>
 <?php
+session_unset();
+session_destroy();
 session_start();
 
-// Function to validate user credentials
-function validateCredentials($username, $password) {
-    $users = array_map('str_getcsv', file('users.csv'));
+$file = 'users.csv';
 
+function readUsers($file) {
+    return array_map('str_getcsv', file($file));
+}
+function saveUsers($file, $users) {
+    $handle = fopen($file, 'w');
     foreach ($users as $user) {
-        if ($user[0] === $username && $user[1] === $password) {
-            return true; // Valid credentials
-        }
+        fputcsv($handle, $user);
     }
-
-    return false; // Invalid credentials
+    fclose($handle);
 }
 
-$error_msg = '';
+$showDialog = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['new_password']) && isset($_SESSION['User']) ) { //constraseña nueva desde dialog y usuario sujeto a cambio
+        $username = $_SESSION['User'];
+        $old_password = $_SESSION['password'];
+        $new_password = $_POST['new_password'];
 
-    if (validateCredentials($username, $password)) {
-        $_SESSION['User'] = $username;
-        header('Location: ./menu.php');
-        exit;
-    } else {
-        // Display an alert message for invalid credentials
-        echo '<script>alert("You have entered the wrong credentials.");</script>';
+        $users = readUsers($file);
+        $updated = false;
+        foreach ($users as &$user) {
+            if ($user[0] === $username && $user[1] === $old_password) {
+                $user[1] = password_hash($new_password, PASSWORD_DEFAULT); //Actualizar la contraseña con hash, más seguro ya que estamos dando demasiados permisos de acceso al archivo
+                saveUsers($file, $users);
+                echo "<script>alert('Please, enter new credentials.');</script>";
+                $updated=true;
+                break;
+            }
+        }
+    }
+    else if (isset($_POST['username']) && isset($_POST['password'])) { //No hay dialogo activo. Contraseña normal
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $users = readUsers($file);
+        $found = false;
+
+        foreach ($users as $user) {
+            if (($user[0] === $username && password_verify($password, $user[1])) || ($user[0] === $username && $user[1] === $password)) {
+                $found = true; //usuario y contraseña correctos
+                if (strtolower($username) === strtolower(password_verify($password, $user[1])) || (strtolower($username) === strtolower($password))) { //necesario activar dialogo
+                    $_SESSION['User'] = $username;
+                    $_SESSION['password'] = $password;
+                    $showDialog = true;
+                    break;
+                }
+                else {
+                    $_SESSION['User'] = $username;
+                    header('Location: ./menu.php');
+                    break;
+                }
+                break;
+            }
+        }
+        if (!$found) {
+            echo '<script>alert("You have entered the wrong credentials.");</script>';
+        }
     }
 }
 ?>
@@ -137,6 +172,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         background-color: yellowgreen;
     }
 
+    dialog {     
+        border: none;  
+        border-radius: 10px;
+        padding: 10px 10px;
+        text-align: center;
+        background-color: #B0B0B0;
+    }
+    dialog::backdrop {
+        background: rgba(0,0,0,0.4);
+    }
+
 </style>    
 
 <body>
@@ -155,23 +201,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
                 <button class="button" type="submit">Login</button>
             </form>
         </div>
-        <button id="new-user-button" class="bottom-right">Request New User Creation</button>
-
-        <script>
-            document.getElementById('new-user-button').addEventListener('click', function () {
-                var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-                var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-                var popupWidth = 500; // Set the width of the popup
-                var popupHeight = 600; // Set the height of the popup
-                var leftPosition = (screenWidth - popupWidth) / 2;
-                var topPosition = (screenHeight - popupHeight) / 2;
-
-                window.open('registration-popup.php', 'NewUserPopup', 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + leftPosition + ',top=' + topPosition);
-
-            });
-        </script>
-
+        <dialog id="changePasswordDialog">
+            <p>Please, change the default password for a new one.</p>
+            <form id="changePasswordForm" method="POST" action="">
+                <input type="password" id="newPassword" name="new_password" required><br><br>
+                <button type="submit">Submit</button>
+            </form>
+        </dialog>
     </div>
+    <script>
+        <?php if ($showDialog): ?>
+            document.getElementById('changePasswordDialog').showModal();
+            const oldPassword = "<?php echo $password; ?>"; // contraseña antigua
+            const username = "<?php echo $username; ?>";
+            const form = document.getElementById('changePasswordForm');
+            form.addEventListener('submit', function(e) {
+                const newPassword = document.getElementById('newPassword').value;
+                alert(username);
+                if (newPassword.toLowerCase() === oldPassword.toLowerCase()) {
+                    e.preventDefault(); // detener envío del formulario
+                    alert('The new password must be different from the old one.');
+                }
+            });
+        <?php endif; ?>
+    </script>
 </body>
 </head>
 </html> 
