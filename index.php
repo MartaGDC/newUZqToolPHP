@@ -148,13 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         border: 1px solid #FFFFFF;
     }
 
-    .error-message {
-        color: red;
-        font-size: 18px;
-        margin-top: 2px;
-        text-align: center;
-    }
-
     .bottom-right {
         position: relative;
         bottom: -250px;
@@ -217,7 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const form = document.getElementById('changePasswordForm');
             form.addEventListener('submit', function(e) {
                 const newPassword = document.getElementById('newPassword').value;
-                alert(username);
                 if (newPassword.toLowerCase() === oldPassword.toLowerCase()) {
                     e.preventDefault(); // detener envío del formulario
                     alert('The new password must be different from the old one.');
