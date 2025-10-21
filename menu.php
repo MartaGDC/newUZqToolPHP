@@ -279,6 +279,8 @@ if (isset($_GET['button'])) {
                     <a class="button project-option" data-target="base">Bases</a>
                     <div class="projects" id="baseDropdown">
                         <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
+                        <a class="button" href="<?= $host ?>:5004/base_artefactos?user=<?= urlencode($_SESSION['User']) ?>">Artefactos</a>
+                        <a class="button" href="<?= $host ?>:5004/base_ROIS?user=<?= urlencode($_SESSION['User']) ?>">ROIs y ROPs</a>
                     </div>
                 </div>
                 <?php if ($user == "mmu" || $user == "jpr"): ?>
