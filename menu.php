@@ -85,6 +85,7 @@ if (isset($_GET['button'])) {
             cursor: pointer;
             z-index: 20;
             position:relative;
+            text-decoration: none;
         }
 
         .button:hover,
@@ -370,6 +371,8 @@ if (isset($_GET['button'])) {
 
             </div>            
         </div>
+        <a class="button" href="<?= $host ?>:5004/rm?user=<?= urlencode($_SESSION['User']) ?>">Segmentación<br>RM</a>
+
     </div>
 
     <script>
