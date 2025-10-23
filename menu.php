@@ -371,7 +371,7 @@ if (isset($_GET['button'])) {
 
             </div>            
         </div>
-        <a class="button" href="<?= $host ?>:5004/rm?user=<?= urlencode($_SESSION['User']) ?>">Segmentación<br>RM</a>
+        <a class="button" href="<?= $host ?>:5004/rm?user=<?= urlencode($_SESSION['User']) ?>">MRink</a>
 
     </div>
 
