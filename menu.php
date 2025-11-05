@@ -282,9 +282,10 @@ if (isset($_GET['button'])) {
                         <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
                         <a class="button" href="<?= $host ?>:5004/base_artefactos?user=<?= urlencode($_SESSION['User']) ?>">Artefactos</a>
                         <a class="button" href="<?= $host ?>:5004/base_ROIS?user=<?= urlencode($_SESSION['User']) ?>">ROIs y ROPs</a>
+                        <a class="button" href="<?= $host ?>:5004/base_marco?user=<?= urlencode($_SESSION['User']) ?>">Marco y escala</a>
                     </div>
                 </div>
-                <?php if ($user == "mmu" || $user == "jpr"): ?>
+                <?php if ($user == "mmu" || $user == "jpr" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="foot">Pie</a>
                         <div class="projects" id="footDropdown">
@@ -297,7 +298,7 @@ if (isset($_GET['button'])) {
                         </div>
                     </div>
                 <?php endif; ?>
-                <?php if ($user == "mmu" || $user == "pfm"): ?>
+                <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="knee">Rodilla</a>
                         <div class="projects" id="kneeDropdown">
@@ -343,7 +344,7 @@ if (isset($_GET['button'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($user == "mmu" || $user == "pfm"): ?>
+                <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="hand">Mano</a>
                         <div class="projects" id="handDropdown">
@@ -356,7 +357,9 @@ if (isset($_GET['button'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($user == "mmu" || $user == "ppa"): ?>
+                <!-- codo pendiente -->
+
+                <?php if ($user == "mmu" || $user == "ppa" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="abd">Abdomino perineal</a>
                         <div class="projects" id="abdDropdown">
@@ -371,7 +374,7 @@ if (isset($_GET['button'])) {
 
             </div>            
         </div>
-        <?php if ($user == "mmu"): ?>
+        <?php if ($user == "mmu" || $user == "mgd"): ?>
             <a class="button" href="<?= $host ?>:5004/rm?user=<?= urlencode($_SESSION['User']) ?>">MRink</a>
         <?php endif; ?>
     </div>
