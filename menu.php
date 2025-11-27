@@ -276,15 +276,17 @@ if (isset($_GET['button'])) {
         <div class="dropdown-container">
             <button class="button" id="drawBtn">UZink</button>
             <div class="dropdown" id="drawDropdown">
-                <div class="projects-container">
-                    <a class="button project-option" data-target="base">Bases</a>
-                    <div class="projects" id="baseDropdown">
-                        <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
-                        <a class="button" href="<?= $host ?>:5004/base_artefactos?user=<?= urlencode($_SESSION['User']) ?>">Artefactos</a>
-                        <a class="button" href="<?= $host ?>:5004/base_ROIS?user=<?= urlencode($_SESSION['User']) ?>">ROIs y ROPs</a>
-                        <a class="button" href="<?= $host ?>:5004/base_marco?user=<?= urlencode($_SESSION['User']) ?>">Marco y escala</a>
+                <?php if ($user == "mmu" || $user == "mgd"): ?>
+                    <div class="projects-container">
+                        <a class="button project-option" data-target="base">Bases</a>
+                        <div class="projects" id="baseDropdown">
+                            <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
+                            <a class="button" href="<?= $host ?>:5004/base_artefactos?user=<?= urlencode($_SESSION['User']) ?>">Artefactos</a>
+                            <a class="button" href="<?= $host ?>:5004/base_ROIS?user=<?= urlencode($_SESSION['User']) ?>">ROIs y ROPs</a>
+                            <a class="button" href="<?= $host ?>:5004/base_marco?user=<?= urlencode($_SESSION['User']) ?>">Marco y escala</a>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
                 <?php if ($user == "mmu" || $user == "jpr" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="foot">Pie</a>
@@ -361,7 +363,7 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="nerves">Nervios</a>
                         <div class="projects" id="nervesDropdown">
-
+                            <a class="button" href="<?= $host ?>:5004/nerves_STC?user=<?= urlencode($_SESSION['User']) ?>">STC</a>
                         </div>
                     </div>
                 <?php endif; ?>
