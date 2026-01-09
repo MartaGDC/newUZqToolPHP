@@ -300,7 +300,7 @@ if (isset($_GET['button'])) {
                         </div>
                     </div>
                 <?php endif; ?>
-                <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
+                <?php if ($user == "mmu" || $user == "pfm" || $user == "jmp" || $user == "mgd"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="knee">Rodilla</a>
                         <div class="projects" id="kneeDropdown">
