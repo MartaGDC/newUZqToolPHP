@@ -381,6 +381,12 @@ if (isset($_GET['button'])) {
                     </div>
                 <?php endif; ?>
 
+                 <?php if ($user == "mmu" || $user == "jmp" || $user == "mgd"): ?>
+                    <div class="projects-container">
+                        <a class="button" href="<?= $host ?>:5004/menisco?user=<?= urlencode($_SESSION['User']) ?>">MeniscoUZ</a>
+                    </div>
+                <?php endif; ?>
+
             </div>            
         </div>
         <?php if ($user == "mmu" || $user == "mgd"): ?>
