@@ -1,70 +1,70 @@
-<?php error_reporting(E_ALL); ?>
 <?php
-session_unset();
-session_destroy();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
-$file = 'users.csv';
-
-function readUsers($file) {
-    return array_map('str_getcsv', file($file));
-}
-function saveUsers($file, $users) {
-    $handle = fopen($file, 'w');
-    foreach ($users as $user) {
-        fputcsv($handle, $user);
-    }
-    fclose($handle);
+try {
+    $pdo = new PDO(
+        "pgsql:host=localhost;dbname=db_php_flask",
+        "php_flask",
+        "SdeSindrome$",
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]
+    );
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 
 $showDialog = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['new_password']) && isset($_SESSION['User']) ) { //constraseña nueva desde dialog y usuario sujeto a cambio
-        $username = $_SESSION['User'];
-        $old_password = $_SESSION['password'];
-        $new_password = $_POST['new_password'];
+//Cambio contraseña
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_password']) && isset($_SESSION['User'])) {
+    
+    $username = $_SESSION['User'];
+    $new_password = $_POST['new_password'];
 
-        $users = readUsers($file);
-        $updated = false;
-        foreach ($users as &$user) {
-            if ($user[0] === $username && $user[1] === $old_password) {
-                $user[1] = password_hash($new_password, PASSWORD_DEFAULT); //Actualizar la contraseña con hash, más seguro ya que estamos dando demasiados permisos de acceso al archivo
-                saveUsers($file, $users);
-                echo "<script>alert('Please, enter new credentials.');</script>";
-                $updated=true;
-                break;
-            }
-        }
-    }
-    else if (isset($_POST['username']) && isset($_POST['password'])) { //No hay dialogo activo. Contraseña normal
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $users = readUsers($file);
-        $found = false;
+    $hash = password_hash($new_password, PASSWORD_DEFAULT);
 
-        foreach ($users as $user) {
-            if (($user[0] === $username && password_verify($password, $user[1])) || ($user[0] === $username && $user[1] === $password)) {
-                $found = true; //usuario y contraseña correctos
-                if (strtolower($username) === strtolower(password_verify($password, $user[1])) || (strtolower($username) === strtolower($password))) { //necesario activar dialogo
-                    $_SESSION['User'] = $username;
-                    $_SESSION['password'] = $password;
-                    $showDialog = true;
-                    break;
-                }
-                else {
-                    $_SESSION['User'] = $username;
-                    header('Location: ./menu.php');
-                    break;
-                }
-                break;
-            }
+    $stmt = $pdo->prepare("
+        UPDATE users
+        SET password_hash = :hash,
+            must_change_password = false
+        WHERE username = :username
+    ");
+    $stmt->execute([
+        "hash"=>$hash,
+        "username"=>$username
+    ]);
+    echo "<script>alert('Please, enter new credentials.');</script>";
+}
+
+//Contraseña no default:
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password']) && isset($_POST['username'])) {
+    
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->execute(["username" => $username]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password_hash'])) {
+        $_SESSION['User'] =$username;
+
+        if ($user['must_change_password']) {
+            $showDialog=true;
+        } else {
+            header('Location: ./menu.php');
+            exit();
         }
-        if (!$found) {
-            echo '<script>alert("You have entered the wrong credentials.");</script>';
-        }
+    } else { 
+        echo '<script>alert("You have entered the wrong credentials.");</script>';
     }
 }
+
 ?>
 
 <!DOCTYPE html>
