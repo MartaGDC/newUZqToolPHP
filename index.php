@@ -4,6 +4,10 @@ ini_set('display_errors', 1);
 
 session_start();
 
+require __DIR__ . '/vendor/autoload.php';
+use Firebase\JWT\JWT;
+
+
 try {
     $pdo = new PDO(
         "pgsql:host=localhost;dbname=db_php_flask",
@@ -53,6 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password']) && isset(
 
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['User'] =$username;
+        
+        //JWT para compartir info con Flask (para no autenticar en flask tambien)
+        $key = "NH/a05xVQFOsoEk4uBFrdRVVOJw1hdu9txKRmyCTYrE="; //generada con openssl rand -base64 32 para asegurar random y tmñ
+        $payload = [
+            "username" => $username,
+            "iat" => time(),
+            "exp" => time() + 3600
+        ];
+        $jwt = JWT::encode($payload, $key, 'HS256');
+        $_SESSION['jwt'] = $jwt; //para que acceda menu.php directamente desde var de sesion
 
         if ($user['must_change_password']) {
             $showDialog=true;

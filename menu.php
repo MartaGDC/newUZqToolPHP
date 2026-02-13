@@ -1,9 +1,28 @@
 <?php
-require_once 'auth_check.php';
 session_start();
+require_once 'auth_check.php';
+require 'vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 $host = 'http://127.0.0.1'; // A cambiar para despliegue en servidor
-$user = $_SESSION['User'];
+$key = "NH/a05xVQFOsoEk4uBFrdRVVOJw1hdu9txKRmyCTYrE=";
+$token = $_SESSION['jwt'] ?? null;
+if (!$token) {
+    header("Location: index.php");
+    exit();
+}
+
+try {
+    $decoded = JWT::decode($token, new Key($key, 'HS256'));
+    $user = $decoded->username;
+} catch (Exception $e) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+
 
 if (isset($_GET['button'])) {
     $_SESSION['button'] = $_GET['button'];
@@ -280,10 +299,10 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="base">Bases</a>
                         <div class="projects" id="baseDropdown">
-                            <a class="button" href="<?= $host ?>:5004/base_tejidos?user=<?= urlencode($_SESSION['User']) ?>">Tejidos</a>
-                            <a class="button" href="<?= $host ?>:5004/base_artefactos?user=<?= urlencode($_SESSION['User']) ?>">Artefactos</a>
-                            <a class="button" href="<?= $host ?>:5004/base_ROIS?user=<?= urlencode($_SESSION['User']) ?>">ROIs y ROPs</a>
-                            <a class="button" href="<?= $host ?>:5004/base_marco?user=<?= urlencode($_SESSION['User']) ?>">Marco y escala</a>
+                            <a class="button" href="<?= $host ?>:5004/base_tejidos?token=<?= urlencode($token) ?>">Tejidos</a>
+                            <a class="button" href="<?= $host ?>:5004/base_artefactos?token=<?= urlencode($token) ?>">Artefactos</a>
+                            <a class="button" href="<?= $host ?>:5004/base_ROIS?token=<?= urlencode($token) ?>">ROIs y ROPs</a>
+                            <a class="button" href="<?= $host ?>:5004/base_marco?token=<?= urlencode($token) ?>">Marco y escala</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -291,12 +310,12 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="foot">Pie</a>
                         <div class="projects" id="footDropdown">
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?user=<?= urlencode($_SESSION['User']) ?>">Fascia plantar longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?user=<?= urlencode($_SESSION['User']) ?>">Fascia plantar transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?user=<?= urlencode($_SESSION['User']) ?>">Aquiles transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?user=<?= urlencode($_SESSION['User']) ?>">Placa volar longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_tarsal?user=<?= urlencode($_SESSION['User']) ?>">T&uacute;nel tarsiano transversal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?token=<?= urlencode($token) ?>">Fascia plantar longitudinal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?token=<?= urlencode($token) ?>">Fascia plantar transversal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?token=<?= urlencode($token) ?>">Aquiles longitudinal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?token=<?= urlencode($token) ?>">Aquiles transversal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?token=<?= urlencode($token) ?>">Placa volar longitudinal</a>
+                            <a class="button" href="<?= $host ?>:5004/foot_transversal_tarsal?token=<?= urlencode($token) ?>">T&uacute;nel tarsiano transversal</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -307,39 +326,39 @@ if (isset($_GET['button'])) {
                             <div class="subprojects-container">
                                 <a class="button subproject-option" data-target = "knee_ant">Rodilla Anterior</a>
                                 <div class="subprojects" id="knee_antDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?user=<?= urlencode($_SESSION['User']) ?>">Transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?user=<?= urlencode($_SESSION['User']) ?>">Tr&oacute;clea longitudinal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?user=<?= urlencode($_SESSION['User']) ?>">Parasagital</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?token=<?= urlencode($token) ?>">Parasagital</a>
                                 </div>
                             </div>
                             <div class="subprojects-container">
                                 <a class="button subproject-option" data-target = "knee_medial">Rodilla Medial</a>
                                 <div class="subprojects" id="knee_medialDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?user=<?= urlencode($_SESSION['User']) ?>">LLI</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Meniscal longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?token=<?= urlencode($token) ?>">LLI</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?token=<?= urlencode($token) ?>">Meniscal transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?token=<?= urlencode($token) ?>">Meniscal longitudinal</a>
                                 </div>
                             </div>
                             <div class="subprojects-container">
                                 <a class="button subproject-option" data-target = "knee_lat">Rodilla Lateral</a>
                                 <div class="subprojects" id="knee_latDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?user=<?= urlencode($_SESSION['User']) ?>">Cintilla iliotibial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?user=<?= urlencode($_SESSION['User']) ?>">LLE</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?user=<?= urlencode($_SESSION['User']) ?>">B&iacute;ceps</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?user=<?= urlencode($_SESSION['User']) ?>">Menisco transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Menisco longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?token=<?= urlencode($token) ?>">Cintilla iliotibial</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?token=<?= urlencode($token) ?>">LLE</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?token=<?= urlencode($token) ?>">B&iacute;ceps</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?token=<?= urlencode($token) ?>">Menisco transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?token=<?= urlencode($token) ?>">Menisco longitudinal</a>
                                 </div>
                             </div>
                             <div class="subprojects-container">
                                 <a class="button subproject-option" data-target = "knee_post">Rodilla Posterior</a>
                                 <div class="subprojects" id="knee_postDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?user=<?= urlencode($_SESSION['User']) ?>">Transversal medial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?user=<?= urlencode($_SESSION['User']) ?>">Transversal central</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Transversal lateral</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal medial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal lateral</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?token=<?= urlencode($token) ?>">Transversal medial</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?token=<?= urlencode($token) ?>">Transversal central</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?token=<?= urlencode($token) ?>">Transversal lateral</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?token=<?= urlencode($token) ?>">Longitudinal medial</a>
+                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?token=<?= urlencode($token) ?>">Longitudinal lateral</a>
                                 </div>
                             </div>
                         </div>
@@ -350,11 +369,11 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="hand">Mano</a>
                         <div class="projects" id="handDropdown">
-                            <a class="button" href="<?= $host ?>:5004/hand_longitudinal?user=<?= urlencode($_SESSION['User']) ?>">Longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_transversal?user=<?= urlencode($_SESSION['User']) ?>">Transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_radial?user=<?= urlencode($_SESSION['User']) ?>">Radial</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_cubital?user=<?= urlencode($_SESSION['User']) ?>">Cubital</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_dorsal?user=<?= urlencode($_SESSION['User']) ?>">Dorsal</a>
+                            <a class="button" href="<?= $host ?>:5004/hand_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                            <a class="button" href="<?= $host ?>:5004/hand_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                            <a class="button" href="<?= $host ?>:5004/hand_radial?token=<?= urlencode($token) ?>">Radial</a>
+                            <a class="button" href="<?= $host ?>:5004/hand_cubital?token=<?= urlencode($token) ?>">Cubital</a>
+                            <a class="button" href="<?= $host ?>:5004/hand_dorsal?token=<?= urlencode($token) ?>">Dorsal</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -363,7 +382,7 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="nerves">Nervios</a>
                         <div class="projects" id="nervesDropdown">
-                            <a class="button" href="<?= $host ?>:5004/nerves_STC?user=<?= urlencode($_SESSION['User']) ?>">STC</a>
+                            <a class="button" href="<?= $host ?>:5004/nerves_STC?token=<?= urlencode($token) ?>">STC</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -372,25 +391,25 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="abd">Abdomino perineal</a>
                         <div class="projects" id="abdDropdown">
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?user=<?= urlencode($_SESSION['User']) ?>">Transversal l&iacute;nea media</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?user=<?= urlencode($_SESSION['User']) ?>">Transversal recto</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?user=<?= urlencode($_SESSION['User']) ?>">Transversal spiegel</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_toracolum?user=<?= urlencode($_SESSION['User']) ?>">Transversal fascia toracolumbar</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_suelo_pelvico?user=<?= urlencode($_SESSION['User']) ?>">Suelo p&eacute;lvico</a>
+                            <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?token=<?= urlencode($token) ?>">Transversal l&iacute;nea media</a>
+                            <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
+                            <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?token=<?= urlencode($token) ?>">Transversal spiegel</a>
+                            <a class="button" href="<?= $host ?>:5004/abd_transversal_toracolum?token=<?= urlencode($token) ?>">Transversal fascia toracolumbar</a>
+                            <a class="button" href="<?= $host ?>:5004/abd_suelo_pelvico?token=<?= urlencode($token) ?>">Suelo p&eacute;lvico</a>
                         </div>
                     </div>
                 <?php endif; ?>
 
                  <?php if ($user == "mmu" || $user == "jmp" || $user == "mgd"): ?>
                     <div class="projects-container">
-                        <a class="button" href="<?= $host ?>:5004/menisco?user=<?= urlencode($_SESSION['User']) ?>">MeniscoUZ</a>
+                        <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
                     </div>
                 <?php endif; ?>
 
             </div>            
         </div>
         <?php if ($user == "mmu" || $user == "mgd"): ?>
-            <a class="button" href="<?= $host ?>:5004/rm?user=<?= urlencode($_SESSION['User']) ?>">MRink</a>
+            <a class="button" href="<?= $host ?>:5004/rm?token=<?= urlencode($token) ?>">MRink</a>
         <?php endif; ?>
     </div>
 
