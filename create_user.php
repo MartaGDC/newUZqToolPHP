@@ -18,7 +18,7 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = strtoupper($username);
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -37,6 +37,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <form method="POST">
     Usuario: <input name="username"><br>
-    Password inicial: <input name="password"><br>
     <button>Crear</button>
 </form>
