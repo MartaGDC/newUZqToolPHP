@@ -281,7 +281,9 @@ if (isset($_GET['button'])) {
                 <a class="button" href="?button=tendon">Tendon</a>
                 <a class="button" href="?button=nerve-transversal">Nerve Transversal</a>
                 <a class="button" href="?button=nerve-longitudinal">Nerve Longitudinal</a>
-                <a class="button" href="?button=electrolysis">Electrolysis</a>
+                <?php if ($user == "mmu" || $user == "mgd"): ?>
+                    <a class="button" href="<?= $host ?>:5004/electrolysis?token=<?= urlencode($token) ?>">Electrolysis</a>
+                <?php endif; ?>
             </div>
         </div>
         <!-- Automático -->
