@@ -25,8 +25,8 @@ _b1 = int(sys.argv[7])
 _a2 = int(sys.argv[8])
 _b2 = int(sys.argv[9])
 
-_width = int(sys.argv[10])
-_height = int(sys.argv[11])
+_height = int(sys.argv[10])
+_width = int(sys.argv[11])
 Evaluator = sys.argv[12]
 Count = sys.argv[13]
 EvalU = sys.argv[14]
@@ -43,7 +43,7 @@ image = io.imread(Selected, as_gray=True)
 image = (image * 255).astype(np.uint8)  # Normalize to 0-255 range
 
 # Transform the cordinates into true image
-width, height = image.shape
+height, width = image.shape
 
 x1 = int(_x1*width/_width)
 x2 = int(_x2*width/_width)

@@ -19,8 +19,8 @@ _x1 = int(sys.argv[2])
 _y1 = int(sys.argv[3])
 _x2 = int(sys.argv[4])
 _y2 = int(sys.argv[5])
-_width = int(sys.argv[6])
-_height = int(sys.argv[7])
+_height = int(sys.argv[6])
+_width = int(sys.argv[7])
 Evaluator = sys.argv[8]
 Count = sys.argv[9]
 Eval = sys.argv[10]
@@ -38,7 +38,7 @@ Selected = os.path.join(Imgspath, Name)
 image = io.imread(Selected, as_gray=True)
 image = (image * 255).astype(np.uint8)
 
-width, height = image.shape
+height, width = image.shape
 x1 = int(_x1 * width / _width)
 x2 = int(_x2 * width / _width)
 y1 = int(_y1 * height / _height)

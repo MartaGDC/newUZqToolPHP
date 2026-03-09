@@ -14,8 +14,8 @@ from datetime import datetime
 # Get the variables from command-line arguments
 
 Name = sys.argv[1]
-_width = int(sys.argv[2])
-_height = int(sys.argv[3])
+_height = int(sys.argv[2])
+_width = int(sys.argv[3])
 Evaluator = sys.argv[4]
 Count = sys.argv[5]
 Eval = sys.argv[6]
@@ -43,7 +43,7 @@ image = io.imread(Selected, as_gray=True)
 image = (image * 255).astype(np.uint8)  # Normalize to 0-255 range
 
 # Transform the cordinates into true image
-width, height = image.shape
+height, width = image.shape
 
 x = list(map(int, [_xval * width / _width for _xval in _x]))
 y = list(map(int, [_yval * height / _height for _yval in _y]))
