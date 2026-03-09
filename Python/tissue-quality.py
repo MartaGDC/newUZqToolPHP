@@ -27,6 +27,7 @@ Eval = sys.argv[10]
 user = sys.argv[11]
 echo_type = sys.argv[12]
 
+print(_x1, _y1, _x2, _y2, _width, _height)
 #print(Name, _x1, _y2, _width, Eval)
 
 # Path to the image
@@ -35,7 +36,7 @@ Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
 image = io.imread(Selected, as_gray=True)
-image = (image * 255).astype(np.uint8)  # Normalize to 0-255 range
+image = (image * 255).astype(np.uint8)
 
 width, height = image.shape
 x1 = int(_x1 * width / _width)
