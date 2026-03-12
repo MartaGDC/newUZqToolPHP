@@ -143,6 +143,16 @@ if (isset($_GET['button'])) {
             width: 300px;
             transition: background-color 0.1s, color 0.1s, border-color 0.1s;
         }
+        #kneeDropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            margin-top: 10px;
+            background-color: #1A1A1A;
+            color: #F5F5F5;
+            width: 250px;
+            transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+        }
 
         .dropdown a:hover,
         .dropdown a:active {
@@ -308,106 +318,113 @@ if (isset($_GET['button'])) {
                         </div>
                     </div>
                 <?php endif; ?>
-                <?php if ($user == "mmu" || $user == "jpr" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button project-option" data-target="foot">Pie</a>
-                        <div class="projects" id="footDropdown">
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?token=<?= urlencode($token) ?>">Fascia plantar longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?token=<?= urlencode($token) ?>">Fascia plantar transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?token=<?= urlencode($token) ?>">Aquiles longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?token=<?= urlencode($token) ?>">Aquiles transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?token=<?= urlencode($token) ?>">Placa volar longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/foot_transversal_tarsal?token=<?= urlencode($token) ?>">T&uacute;nel tarsiano transversal</a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-                <?php if ($user == "mmu" || $user == "pfm" || $user == "jmp" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button project-option" data-target="knee">Rodilla</a>
-                        <div class="projects" id="kneeDropdown">
-                            <div class="subprojects-container">
-                                <a class="button subproject-option" data-target = "knee_ant">Rodilla Anterior</a>
-                                <div class="subprojects" id="knee_antDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea longitudinal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?token=<?= urlencode($token) ?>">Parasagital</a>
+                <div class="projects-container">
+                    <a class="button project-option" data-target="anatomy">Anatomía</a>
+                    <div class="projects" id="anatomyDropdown">
+                        <?php if ($user == "mmu" || $user == "jpr" || $user == "mgd"): ?>
+                            <div class="projects-container">
+                                <a class="button subproject-option" data-target="foot">Pie</a>
+                                <div class="projects" id="footDropdown">
+                                    <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?token=<?= urlencode($token) ?>">Fascia plantar longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?token=<?= urlencode($token) ?>">Fascia plantar transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?token=<?= urlencode($token) ?>">Aquiles longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/foot_transversal_achilles?token=<?= urlencode($token) ?>">Aquiles transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/foot_longitudinal_volar?token=<?= urlencode($token) ?>">Placa volar longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/foot_transversal_tarsal?token=<?= urlencode($token) ?>">T&uacute;nel tarsiano transversal</a>
                                 </div>
                             </div>
-                            <div class="subprojects-container">
-                                <a class="button subproject-option" data-target = "knee_medial">Rodilla Medial</a>
-                                <div class="subprojects" id="knee_medialDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?token=<?= urlencode($token) ?>">LLI</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?token=<?= urlencode($token) ?>">Meniscal transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?token=<?= urlencode($token) ?>">Meniscal longitudinal</a>
+                        <?php endif; ?>
+                        
+                        <?php if ($user == "mmu" || $user == "pfm" || $user == "jmp" || $user == "mgd"): ?>
+                            <div class="projects-container">
+                                <a class="button subproject-option" data-target="knee">Rodilla</a>
+                                <div class="projects" id="kneeDropdown">
+                                    <div class="subprojects-container">
+                                        <a class="button subproject-option" data-target = "knee_ant">Rodilla Anterior</a>
+                                        <div class="subprojects" id="knee_antDropdown">
+                                            <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea transversal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea longitudinal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?token=<?= urlencode($token) ?>">Parasagital</a>
+                                        </div>
+                                    </div>
+                                    <div class="subprojects-container">
+                                        <a class="button subproject-option" data-target = "knee_medial">Rodilla Medial</a>
+                                        <div class="subprojects" id="knee_medialDropdown">
+                                            <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?token=<?= urlencode($token) ?>">LLI</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?token=<?= urlencode($token) ?>">Meniscal transversal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?token=<?= urlencode($token) ?>">Meniscal longitudinal</a>
+                                        </div>
+                                    </div>
+                                    <div class="subprojects-container">
+                                        <a class="button subproject-option" data-target = "knee_lat">Rodilla Lateral</a>
+                                        <div class="subprojects" id="knee_latDropdown">
+                                            <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?token=<?= urlencode($token) ?>">Cintilla iliotibial</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?token=<?= urlencode($token) ?>">LLE</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?token=<?= urlencode($token) ?>">B&iacute;ceps</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?token=<?= urlencode($token) ?>">Menisco transversal</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?token=<?= urlencode($token) ?>">Menisco longitudinal</a>
+                                        </div>
+                                    </div>
+                                    <div class="subprojects-container">
+                                        <a class="button subproject-option" data-target = "knee_post">Rodilla Posterior</a>
+                                        <div class="subprojects" id="knee_postDropdown">
+                                            <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?token=<?= urlencode($token) ?>">Transversal medial</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?token=<?= urlencode($token) ?>">Transversal central</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?token=<?= urlencode($token) ?>">Transversal lateral</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?token=<?= urlencode($token) ?>">Longitudinal medial</a>
+                                            <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?token=<?= urlencode($token) ?>">Longitudinal lateral</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="subprojects-container">
-                                <a class="button subproject-option" data-target = "knee_lat">Rodilla Lateral</a>
-                                <div class="subprojects" id="knee_latDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?token=<?= urlencode($token) ?>">Cintilla iliotibial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?token=<?= urlencode($token) ?>">LLE</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?token=<?= urlencode($token) ?>">B&iacute;ceps</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_transversal?token=<?= urlencode($token) ?>">Menisco transversal</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?token=<?= urlencode($token) ?>">Menisco longitudinal</a>
+                        <?php endif; ?>
+
+                        <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
+                            <div class="projects-container">
+                                <a class="button subproject-option" data-target="hand">Mano</a>
+                                <div class="projects" id="handDropdown">
+                                    <a class="button" href="<?= $host ?>:5004/hand_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/hand_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                    <a class="button" href="<?= $host ?>:5004/hand_radial?token=<?= urlencode($token) ?>">Radial</a>
+                                    <a class="button" href="<?= $host ?>:5004/hand_cubital?token=<?= urlencode($token) ?>">Cubital</a>
+                                    <a class="button" href="<?= $host ?>:5004/hand_dorsal?token=<?= urlencode($token) ?>">Dorsal</a>
                                 </div>
                             </div>
-                            <div class="subprojects-container">
-                                <a class="button subproject-option" data-target = "knee_post">Rodilla Posterior</a>
-                                <div class="subprojects" id="knee_postDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?token=<?= urlencode($token) ?>">Transversal medial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?token=<?= urlencode($token) ?>">Transversal central</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?token=<?= urlencode($token) ?>">Transversal lateral</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_logitudinal_medial?token=<?= urlencode($token) ?>">Longitudinal medial</a>
-                                    <a class="button" href="<?= $host ?>:5004/knee_posterior_longitudinal_lateral?token=<?= urlencode($token) ?>">Longitudinal lateral</a>
+                        <?php endif; ?>
+
+                        <?php if ($user == "mmu" || $user == "ebg" || $user == "mgd"): ?>
+                            <div class="projects-container">
+                                <a class="button subproject-option" data-target="nerves">Nervios</a>
+                                <div class="projects" id="nervesDropdown">
+                                    <a class="button" href="<?= $host ?>:5004/nerves_STC?token=<?= urlencode($token) ?>">STC</a>
                                 </div>
                             </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($user == "mmu" || $user == "ppa" || $user == "mgd"): ?>
+                            <div class="projects-container">
+                                <a class="button subproject-option" data-target="abd">Abdomino perineal</a>
+                                <div class="projects" id="abdDropdown">
+                                    <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?token=<?= urlencode($token) ?>">Transversal l&iacute;nea media</a>
+                                    <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
+                                    <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?token=<?= urlencode($token) ?>">Transversal spiegel</a>
+                                    <a class="button" href="<?= $host ?>:5004/abd_transversal_toracolum?token=<?= urlencode($token) ?>">Transversal fascia toracolumbar</a>
+                                    <a class="button" href="<?= $host ?>:5004/abd_suelo_pelvico?token=<?= urlencode($token) ?>">Suelo p&eacute;lvico</a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php if ($user == "mmu" || $user == "jmp" || $user == "mgd"): ?>
+                    <div class="projects-container">
+                        <a class="button project-option" data-target="proyecto">Proyectos</a>
+                        <div class="projects" id="proyectoDropdown">
+                            <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
                         </div>
                     </div>
                 <?php endif; ?>
-
-                <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button project-option" data-target="hand">Mano</a>
-                        <div class="projects" id="handDropdown">
-                            <a class="button" href="<?= $host ?>:5004/hand_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_radial?token=<?= urlencode($token) ?>">Radial</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_cubital?token=<?= urlencode($token) ?>">Cubital</a>
-                            <a class="button" href="<?= $host ?>:5004/hand_dorsal?token=<?= urlencode($token) ?>">Dorsal</a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($user == "mmu" || $user == "ebg" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button project-option" data-target="nerves">Nervios</a>
-                        <div class="projects" id="nervesDropdown">
-                            <a class="button" href="<?= $host ?>:5004/nerves_STC?token=<?= urlencode($token) ?>">STC</a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($user == "mmu" || $user == "ppa" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button project-option" data-target="abd">Abdomino perineal</a>
-                        <div class="projects" id="abdDropdown">
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?token=<?= urlencode($token) ?>">Transversal l&iacute;nea media</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?token=<?= urlencode($token) ?>">Transversal spiegel</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_transversal_toracolum?token=<?= urlencode($token) ?>">Transversal fascia toracolumbar</a>
-                            <a class="button" href="<?= $host ?>:5004/abd_suelo_pelvico?token=<?= urlencode($token) ?>">Suelo p&eacute;lvico</a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                 <?php if ($user == "mmu" || $user == "jmp" || $user == "mgd"): ?>
-                    <div class="projects-container">
-                        <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
-                    </div>
-                <?php endif; ?>
-
             </div>            
         </div>
         <?php if ($user == "mmu" || $user == "mgd"): ?>
