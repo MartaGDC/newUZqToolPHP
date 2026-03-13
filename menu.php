@@ -143,17 +143,6 @@ if (isset($_GET['button'])) {
             width: 300px;
             transition: background-color 0.1s, color 0.1s, border-color 0.1s;
         }
-        #kneeDropdown a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            margin-top: 10px;
-            background-color: #1A1A1A;
-            color: #F5F5F5;
-            width: 250px;
-            transition: background-color 0.1s, color 0.1s, border-color 0.1s;
-        }
-
         .dropdown a:hover,
         .dropdown a:active {
             background-color: #3a3a3a;
@@ -242,7 +231,7 @@ if (isset($_GET['button'])) {
         .subprojects-container > .button {
             position: relative;
             z-index: 8;
-            width: 200px;
+            width: 250px;
         }
         .subprojects-container:nth-child(2) {
             z-index: 5;
