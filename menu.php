@@ -410,7 +410,14 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="proyecto">Proyectos</a>
                         <div class="projects" id="proyectoDropdown">
-                            <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
+                            <div class="projects-container">
+                                <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
+                                <a class="button subproject-option" data-target="aquiles">Tend&oacute;n de Aquiles</a>
+                                <div class="projects" id="aquilesDropdown">
+                                    <a class="button" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                    <a class="button" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
