@@ -140,7 +140,7 @@ if (isset($_GET['button'])) {
             margin-top: 10px;
             background-color: #1A1A1A;
             color: #F5F5F5;
-            width: 300px;
+            width: 250px;
             transition: background-color 0.1s, color 0.1s, border-color 0.1s;
         }
         .dropdown a:hover,
@@ -150,19 +150,7 @@ if (isset($_GET['button'])) {
             border: 1px solid #FFFFFF;
         }
 
-        .subdropdown-container {
-            margin-top: 10px;
-            position: relative;
-            z-index: 2;
-        }
-        .subdropdown-container > .button {
-            position: relative;
-            z-index: 3;
-        }
-        .subdropdown-container:nth-child(2) {
-            z-index: 1; /* New más abajo que el subdropdown de Old */
-        }
-        .subdropdown {
+        .projects {
             position: absolute;
             top: 70%;
             left: 50%;
@@ -170,8 +158,8 @@ if (isset($_GET['button'])) {
             display: none;
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 2;
-            padding: 10px;
+            z-index: 1;
+            padding: 15px;
             padding-bottom: 10px;
             padding-top:40px;
         }
@@ -192,36 +180,6 @@ if (isset($_GET['button'])) {
         .projects-container:nth-child(3) {
             z-index: 4;
         }
-        .projects-container:nth-child(4) {
-            z-index: 3;
-        }
-        .projects-container:nth-child(5) {
-            z-index: 2;
-        }
-        .projects-container:nth-child(6) {
-            z-index: 1;
-        }
-        .projects-container:nth-child(7) {
-            z-index: 0;
-        }
-
-        .projects {
-            position: absolute;
-            top: 70%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1;
-            padding: 15px;
-            padding-bottom: 10px;
-            padding-top:40px;
-        }
-        .projects > .button {
-            position: relative;
-            z-index: 9;
-        }
 
         .subprojects-container {
             margin-top: 10px;
@@ -233,6 +191,7 @@ if (isset($_GET['button'])) {
             z-index: 8;
             width: 250px;
         }
+
         .subprojects-container:nth-child(2) {
             z-index: 5;
         }
@@ -245,6 +204,12 @@ if (isset($_GET['button'])) {
         .subprojects-container:nth-child(5) {
             z-index: 2;
         }
+        .subprojects-container:nth-child(6) {
+            z-index: 1;
+        }
+        .subprojects-container:nth-child(7) {
+            z-index: 0;
+        }
 
         .subprojects {
             position: absolute;
@@ -254,14 +219,55 @@ if (isset($_GET['button'])) {
             display: none;
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1;
-            padding: 10px;
+            z-index: 6;
+            padding: 15px;
             padding-bottom: 10px;
             padding-top:40px;
         }
         .subprojects > .button {
             position: relative;
             z-index: 9;
+        }
+
+        .subsubprojects-container {
+            margin-top: 10px;
+            position: relative;
+            z-index: 7;
+        }
+        .subsubprojects-container > .button {
+            z-index: 8;
+        }
+        .subsubprojects-container:nth-child(2) {
+            z-index: 5;
+        }
+        .subsubprojects-container:nth-child(3) {
+            z-index: 4;
+        }
+        .subsubprojects-container:nth-child(4) {
+            z-index: 3;
+        }
+        .subsubprojects-container:nth-child(5) {
+            z-index: 2;
+        }
+
+        .subsubprojects {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 7;
+            padding: 10px;
+            padding-bottom: 10px;
+            padding-top:40px;
+        }
+        
+        .subsubprojects > .button {
+            position: relative;
+            z-index: 9;
+            width:300px;
         }
 
 
@@ -311,9 +317,9 @@ if (isset($_GET['button'])) {
                     <a class="button project-option" data-target="anatomy">Anatomía</a>
                     <div class="projects" id="anatomyDropdown">
                         <?php if ($user == "mmu" || $user == "jpr" || $user == "mgd"): ?>
-                            <div class="projects-container">
+                            <div class="subprojects-container">
                                 <a class="button subproject-option" data-target="foot">Pie</a>
-                                <div class="projects" id="footDropdown">
+                                <div class="subprojects" id="footDropdown">
                                     <a class="button" href="<?= $host ?>:5004/foot_longitudinal_fascia?token=<?= urlencode($token) ?>">Fascia plantar longitudinal</a>
                                     <a class="button" href="<?= $host ?>:5004/foot_transversal_fascia?token=<?= urlencode($token) ?>">Fascia plantar transversal</a>
                                     <a class="button" href="<?= $host ?>:5004/foot_longitudinal_achilles?token=<?= urlencode($token) ?>">Aquiles longitudinal</a>
@@ -325,12 +331,12 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
                         
                         <?php if ($user == "mmu" || $user == "pfm" || $user == "jmp" || $user == "mgd"): ?>
-                            <div class="projects-container">
+                            <div class="subprojects-container">
                                 <a class="button subproject-option" data-target="knee">Rodilla</a>
-                                <div class="projects" id="kneeDropdown">
-                                    <div class="subprojects-container">
-                                        <a class="button subproject-option" data-target = "knee_ant">Rodilla Anterior</a>
-                                        <div class="subprojects" id="knee_antDropdown">
+                                <div class="subprojects" id="kneeDropdown">
+                                    <div class="subsubprojects-container">
+                                        <a class="button subsubproject-option" data-target = "knee_ant">Rodilla Anterior</a>
+                                        <div class="subsubprojects" id="knee_antDropdown">
                                             <a class="button" href="<?= $host ?>:5004/knee_anterior_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_anterior_transversal?token=<?= urlencode($token) ?>">Transversal</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_anterior_transverse_trochlea?token=<?= urlencode($token) ?>">Tr&oacute;clea transversal</a>
@@ -338,17 +344,17 @@ if (isset($_GET['button'])) {
                                             <a class="button" href="<?= $host ?>:5004/knee_anterior_parasagittal?token=<?= urlencode($token) ?>">Parasagital</a>
                                         </div>
                                     </div>
-                                    <div class="subprojects-container">
-                                        <a class="button subproject-option" data-target = "knee_medial">Rodilla Medial</a>
-                                        <div class="subprojects" id="knee_medialDropdown">
+                                    <div class="subsubprojects-container">
+                                        <a class="button subsubproject-option" data-target = "knee_medial">Rodilla Medial</a>
+                                        <div class="subsubprojects" id="knee_medialDropdown">
                                             <a class="button" href="<?= $host ?>:5004/knee_medial_LLI?token=<?= urlencode($token) ?>">LLI</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_transversal?token=<?= urlencode($token) ?>">Meniscal transversal</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_medial_meniscal_longitudinal?token=<?= urlencode($token) ?>">Meniscal longitudinal</a>
                                         </div>
                                     </div>
-                                    <div class="subprojects-container">
-                                        <a class="button subproject-option" data-target = "knee_lat">Rodilla Lateral</a>
-                                        <div class="subprojects" id="knee_latDropdown">
+                                    <div class="subsubprojects-container">
+                                        <a class="button subsubproject-option" data-target = "knee_lat">Rodilla Lateral</a>
+                                        <div class="subsubprojects" id="knee_latDropdown">
                                             <a class="button" href="<?= $host ?>:5004/knee_lateral_cintilla?token=<?= urlencode($token) ?>">Cintilla iliotibial</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_lateral_LLE?token=<?= urlencode($token) ?>">LLE</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_lateral_biceps?token=<?= urlencode($token) ?>">B&iacute;ceps</a>
@@ -356,9 +362,9 @@ if (isset($_GET['button'])) {
                                             <a class="button" href="<?= $host ?>:5004/knee_lateral_menisco_longitudinal?token=<?= urlencode($token) ?>">Menisco longitudinal</a>
                                         </div>
                                     </div>
-                                    <div class="subprojects-container">
-                                        <a class="button subproject-option" data-target = "knee_post">Rodilla Posterior</a>
-                                        <div class="subprojects" id="knee_postDropdown">
+                                    <div class="subsubprojects-container">
+                                        <a class="button subsubproject-option" data-target = "knee_post">Rodilla Posterior</a>
+                                        <div class="subsubprojects" id="knee_postDropdown">
                                             <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_medial?token=<?= urlencode($token) ?>">Transversal medial</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_central?token=<?= urlencode($token) ?>">Transversal central</a>
                                             <a class="button" href="<?= $host ?>:5004/knee_posterior_transversal_lateral?token=<?= urlencode($token) ?>">Transversal lateral</a>
@@ -371,9 +377,9 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
 
                         <?php if ($user == "mmu" || $user == "pfm" || $user == "mgd"): ?>
-                            <div class="projects-container">
+                            <div class="subprojects-container">
                                 <a class="button subproject-option" data-target="hand">Mano</a>
-                                <div class="projects" id="handDropdown">
+                                <div class="subprojects" id="handDropdown">
                                     <a class="button" href="<?= $host ?>:5004/hand_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                     <a class="button" href="<?= $host ?>:5004/hand_transversal?token=<?= urlencode($token) ?>">Transversal</a>
                                     <a class="button" href="<?= $host ?>:5004/hand_radial?token=<?= urlencode($token) ?>">Radial</a>
@@ -384,18 +390,18 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
 
                         <?php if ($user == "mmu" || $user == "ebg" || $user == "mgd"): ?>
-                            <div class="projects-container">
+                            <div class="subprojects-container">
                                 <a class="button subproject-option" data-target="nerves">Nervios</a>
-                                <div class="projects" id="nervesDropdown">
+                                <div class="subprojects" id="nervesDropdown">
                                     <a class="button" href="<?= $host ?>:5004/nerves_STC?token=<?= urlencode($token) ?>">STC</a>
                                 </div>
                             </div>
                         <?php endif; ?>
                         
                         <?php if ($user == "mmu" || $user == "ppa" || $user == "mgd"): ?>
-                            <div class="projects-container">
+                            <div class="subprojects-container">
                                 <a class="button subproject-option" data-target="abd">Abdomino perineal</a>
-                                <div class="projects" id="abdDropdown">
+                                <div class="subprojects" id="abdDropdown">
                                     <a class="button" href="<?= $host ?>:5004/abd_transversal_alba?token=<?= urlencode($token) ?>">Transversal l&iacute;nea media</a>
                                     <a class="button" href="<?= $host ?>:5004/abd_transversal_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
                                     <a class="button" href="<?= $host ?>:5004/abd_transversal_spiegel?token=<?= urlencode($token) ?>">Transversal spiegel</a>
@@ -410,12 +416,19 @@ if (isset($_GET['button'])) {
                     <div class="projects-container">
                         <a class="button project-option" data-target="proyecto">Proyectos</a>
                         <div class="projects" id="proyectoDropdown">
-                            <div class="projects-container">
+                            <div class="subprojects-container">
+
                                 <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
                                 <a class="button subproject-option" data-target="aquiles">Tend&oacute;n de Aquiles</a>
-                                <div class="projects" id="aquilesDropdown">
-                                    <a class="button" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
-                                    <a class="button" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                <div class="subprojects" id="aquilesDropdown" style="top:50%;">
+                                    <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                    <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                
+                                </div>
+                                <a class="button subproject-option" data-target="stc" style="z-index:2;">STC</a>
+                                <div class="subprojects" style="z-index:1; top:90%;" id="stcDropdown">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                 </div>
                             </div>
                         </div>
@@ -455,32 +468,17 @@ if (isset($_GET['button'])) {
         desplgarDropdown(drawBtn, drawDropdown);
 
         document.addEventListener('click', function(e) {
-            const isClickInside = e.target.closest('.dropdown') || e.target.closest('.subdropdown') || e.target.closest('.projects');
+            const isClickInside = e.target.closest('.dropdown') || e.target.closest('.projects');
             if (!isClickInside) {
                 document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
-                document.querySelectorAll('.subdropdown').forEach(s => s.style.display = 'none');
                 document.querySelectorAll('.projects').forEach(p => p.style.display = 'none');
             }
         });
 
+
+
         //Funcion para subdropdowns
-        document.querySelectorAll('.button.draw-option').forEach(opt => {
-            opt.addEventListener('click', function(e){
-                e.preventDefault();
-                e.stopPropagation(); // evitar que cierre el dropdown principal
-                const target = opt.dataset.target;
-                const dropdownId = `draw${target.charAt(0).toUpperCase() + target.slice(1)}Dropdown`;
-                const dropdown = document.getElementById(dropdownId);
-                const todosSubdropdowns = document.querySelectorAll('.subdropdown');                
-                todosSubdropdowns.forEach(sd => {
-                    if(sd !== dropdown) sd.style.display = 'none';
-                });
-                dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block'; 
-            });
-        });
-        
-        //Funcion para proyetos
-        document.querySelectorAll('.button.project-option').forEach(option => {
+         document.querySelectorAll('.button.project-option').forEach(option => {
             option.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -495,7 +493,6 @@ if (isset($_GET['button'])) {
             })
         })
 
-        //Funcion para subproyectos (por ahora de rodilla)
         document.querySelectorAll('.button.subproject-option').forEach(option => {
             option.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -510,8 +507,22 @@ if (isset($_GET['button'])) {
                 projectDropdown.style.display = (projectDropdown.style.display==='block')? 'none' : 'block';
             })
         })
-
-
+        
+        //Funcion para proyetos
+        document.querySelectorAll('.button.subsubproject-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const target = option.dataset.target;
+                const projectId = `${target}Dropdown`;
+                const projectDropdown = document.getElementById(projectId);
+                const todosProjectDropdowns =document.querySelectorAll('.subsubprojects');
+                todosProjectDropdowns.forEach(pd => {
+                    if(pd != projectDropdown) pd.style.display = 'none';
+                })
+                projectDropdown.style.display = (projectDropdown.style.display==='block')? 'none' : 'block';
+            })
+        })
 
     </script>
 </body>
