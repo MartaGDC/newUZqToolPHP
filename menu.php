@@ -412,24 +412,30 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
                     </div>
                 </div>
-                <?php if ($user == "mmu" || $user == "jmp" || $user == "mgd"): ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac" || $user == "ebg" || $user == "gcf" || $user == "jmp" ): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="proyecto">Proyectos</a>
                         <div class="projects" id="proyectoDropdown">
                             <div class="subprojects-container">
+                                <?php if ($user == "mmu" || $user == "mgd" ||$user == "jmp" ): ?>
+                                    <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
+                                <?php endif; ?>
+                                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac"): ?>
+                                    <a class="button subproject-option" data-target="aquiles">Tend&oacute;n de Aquiles</a>
+                                    <div class="subprojects" id="aquilesDropdown" style="top:50%;">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                    
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ($user == "mmu" || $user == "mgd" || $user == "ebg" || $user == "gcf"): ?>
 
-                                <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
-                                <a class="button subproject-option" data-target="aquiles">Tend&oacute;n de Aquiles</a>
-                                <div class="subprojects" id="aquilesDropdown" style="top:50%;">
-                                    <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
-                                    <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                                
-                                </div>
-                                <a class="button subproject-option" data-target="stc" style="z-index:2;">STC</a>
-                                <div class="subprojects" style="z-index:1; top:90%;" id="stcDropdown">
-                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
-                                </div>
+                                    <a class="button subproject-option" data-target="stc" style="z-index:2;">STC</a>
+                                    <div class="subprojects" style="z-index:1; top:90%;" id="stcDropdown">
+                                            <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                            <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
