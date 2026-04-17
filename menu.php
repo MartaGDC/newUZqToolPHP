@@ -286,7 +286,7 @@ if (isset($_GET['button'])) {
                 <a class="button" href="?button=tendon">Tendon</a>
                 <a class="button" href="?button=nerve-transversal">Nerve Transversal</a>
                 <a class="button" href="?button=nerve-longitudinal">Nerve Longitudinal</a>
-                <?php if ($user == "mmu" || $user == "mgd" || $user == "jmp"): ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == "jmp" || $user == "iag"): ?>
                     <a class="button" href="<?= $host ?>:5005/electrolysis?token=<?= urlencode($token) ?>">Electrolysis</a>
                 <?php endif; ?>
             </div>
