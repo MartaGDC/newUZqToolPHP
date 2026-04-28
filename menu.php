@@ -412,7 +412,7 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
                     </div>
                 </div>
-                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac" || $user == "ebg" || $user == "gcf" || $user == "jmp" ): ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac" || $user == "ebg" || $user == "gcf" || $user == "jmp" || $user == "pfm" ): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="proyecto">Proyectos</a>
                         <div class="projects" id="proyectoDropdown">
@@ -435,7 +435,7 @@ if (isset($_GET['button'])) {
                                             <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ($user == "mmu" || $user == "mgd" ||$user == "pfm" ): ?>
+                                <?php if ($user == "mmu" || $user == "mgd" || $user == "pfm" ): ?>
                                     <a class="button subproject-option" data-target="polea" style="z-index:2;">Polea</a>
                                     <div class="subprojects" style="z-index:1; top:90%;" id="poleaDropdown">
                                             <a class="button" style="width:300px;" href="<?= $host ?>:5004/polea_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
