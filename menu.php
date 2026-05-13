@@ -447,11 +447,10 @@ if (isset($_GET['button'])) {
                 <?php endif; ?>
             </div>            
         </div>
-        <!-- 
             <?php if ($user == "mmu" || $user == "mgd"): ?>
-                <a class="button" href="<?= $host ?>:5004/rm?token=<?= urlencode($token) ?>">MRink</a>
+                <!-- <a class="button" href="<?= $host ?>:5004/rm?token=<?= urlencode($token) ?>">MRink</a> -->
+                <a class="button" href="<?= $host ?>:5006/UZSim?token=<?= urlencode($token) ?>">UZSim</a>
             <?php endif; ?>
-         -->
     </div>
 
     <script>
