@@ -412,36 +412,46 @@ if (isset($_GET['button'])) {
                         <?php endif; ?>
                     </div>
                 </div>
-                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac" || $user == "ebg" || $user == "gcf" || $user == "jmp" || $user == "pfm" ): ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac" || $user == "ebg" || $user == "gcf" || $user == "jmp" || $user == "pfm" || $user == "sjg"): ?>
                     <div class="projects-container">
                         <a class="button project-option" data-target="proyecto">Proyectos</a>
                         <div class="projects" id="proyectoDropdown">
-                            <div class="subprojects-container">
-                                <?php if ($user == "mmu" || $user == "mgd" ||$user == "jmp" ): ?>
+                            <?php if ($user == "mmu" || $user == "mgd" ||$user == "jmp" ): ?>
+                                <div class="subprojects-container">
                                     <a class="button" href="<?= $host ?>:5004/menisco?token=<?= urlencode($token) ?>">MeniscoUZ</a>
-                                <?php endif; ?>
-                                <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac"): ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr" || $user == "iac"): ?>
+                                <div class="subprojects-container">        
                                     <a class="button subproject-option" data-target="aquiles">Tend&oacute;n de Aquiles</a>
-                                    <div class="subprojects" id="aquilesDropdown" style="top:40%;">
+                                    <div class="subprojects" id="aquilesDropdown">
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/aquiles_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                                    
                                     </div>
-                                <?php endif; ?>
-                                <?php if ($user == "mmu" || $user == "mgd" || $user == "ebg" || $user == "gcf"): ?>
-                                    <a class="button subproject-option" data-target="stc" style="z-index:4;">STC</a>
-                                    <div class="subprojects" style="z-index:3; top:65%;" id="stcDropdown">
-                                            <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_transversal?token=<?= urlencode($token) ?>">Transversal</a>
-                                            <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "ebg" || $user == "gcf"): ?>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target="stc" style="z-index:5;">STC</a>
+                                    <div class="subprojects" style="z-index:4;" id="stcDropdown">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_transversal?token=<?= urlencode($token) ?>">Transversal</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/stc_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                     </div>
-                                <?php endif; ?>
-                                <?php if ($user == "mmu" || $user == "mgd" || $user == "pfm" ): ?>
-                                    <a class="button subproject-option" data-target="polea" style="z-index:2;">Polea</a>
-                                    <div class="subprojects" style="z-index:1; top:90%;" id="poleaDropdown">
-                                            <a class="button" style="width:300px;" href="<?= $host ?>:5004/polea_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "pfm" ): ?>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target="polea" style="z-index:3;">Polea</a>
+                                    <div class="subprojects" style="z-index:2;" id="poleaDropdown">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/polea_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                     </div>
-                                <?php endif; ?>
-                            </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg" ): ?>
+                                <div class="subprojects-container">
+                                    <a class="button" href="<?= $host ?>:5004/diafragma?token=<?= urlencode($token) ?>">Diafragma</a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
