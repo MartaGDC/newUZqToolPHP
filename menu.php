@@ -449,7 +449,7 @@ if (isset($_GET['button'])) {
                             <?php endif; ?>
                             <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg" ): ?>
                                 <div class="subprojects-container">
-                                    <a class="button" href="<?= $host ?>:5004/diafragma?token=<?= urlencode($token) ?>">Diafragma</a>
+                                    <a class="button" href="<?= $host ?>:5004/proDiafragma?token=<?= urlencode($token) ?>">Diafragma</a>
                                 </div>
                             <?php endif; ?>
                         </div>
