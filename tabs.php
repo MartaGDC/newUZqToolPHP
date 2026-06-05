@@ -15,10 +15,12 @@ require_once 'auth_check.php';
                 $activateTab = TRUE;
                 break;
             case 'nerve-transversal':
-
                 $activateTab = FALSE;
                 break;
             case 'nerve-longitudinal':
+                $activateTab = FALSE;
+                break;
+            case 'muscle':
                 $activateTab = FALSE;
                 break;
         }

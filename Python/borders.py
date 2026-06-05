@@ -35,7 +35,7 @@ user = sys.argv[16]
 echo_type = sys.argv[17]
 
 # # # Load thi image
-Imgspath = "E:/UZqTool/uzqtool/html/Upload"
+Imgspath = "/var/www/html/Upload"
 Selected = os.path.join(Imgspath,Name)
 
 # Transform the coordinates into the true image
@@ -93,7 +93,7 @@ for i,ROI in enumerate(ROIS):
     # print('[...]')
    
     # Save data
-    path = os.path.join("E:/UZqTool/uzqtool/html/DATA/",user,echo_type,"borders.txt")
+    path = os.path.join("/var/www/html/DATA/",user,echo_type,"borders.txt")
     with open(path,'a') as file:
         line = ";".join(map(str, save_var))
         file.writelines(line+'\n')

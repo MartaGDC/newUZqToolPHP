@@ -19,15 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $height = $Size->height;
 
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "C:/venvs/qtoolenv/Scripts/python.exe";
+    $venv_python = "/home/marta/appFlask/venv/bin/python3";
 
     // Build the command to execute the Python script
     if ($caseButton == 'nerve-transversal'){
         // Build the command to execute the Python script using the virtual environment's Python interpreter
-        $command = "$venv_python E:/UZqTool/uzqtool/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+    }
+    if ($caseButton == 'muscle'){
+        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
     }
     else{
-        $command = "$venv_python E:/UZqTool/uzqtool/html/Python/morphology.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+        $command = "$venv_python /var/www/html/Python/morphology.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
     }
     // echo $command;
     // Execute the command and capture the output and errors

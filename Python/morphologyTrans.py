@@ -24,7 +24,7 @@ user = sys.argv[8]
 echo_type = sys.argv[9]
 
 # Cargamos puntos del fichero
-polygon_path = "E:/UZqTool/uzqtool/html/PHP/polygon.txt"
+polygon_path = "/var/www/html/PHP/polygon.txt"
 with open(polygon_path, 'r') as file:
     points = file.readlines()[1:]
     _x = []
@@ -35,7 +35,7 @@ with open(polygon_path, 'r') as file:
         _y.append(float(values[1]))
 
 # Path to the image
-Imgspath = "E:/UZqTool/uzqtool/html/Upload"
+Imgspath = "/var/www/html/Upload"
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
@@ -100,7 +100,7 @@ print ("The shape processing has been successfully completed")
 
 
 # Save data
-path = os.path.join("E:/UZqTool/uzqtool/html/DATA/",user,echo_type,"morphology.txt")
+path = os.path.join("/var/www/html/DATA/",user,echo_type,"morphology.txt")
 with open(path,'a') as file:
     line = ";".join(map(str, save_var))
     file.writelines(line+'\n')

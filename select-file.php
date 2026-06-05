@@ -286,6 +286,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     console.log("Evaluator Name: <?php echo isset($evaluatorName) ? htmlspecialchars($evaluatorName) : 'Not available'; ?>");
                     console.log("Assessment Count: <?php echo isset($assessmentCount) ? htmlspecialchars($assessmentCount) : 'Not available'; ?>");
                     console.log("Scale: <?php echo isset($_SESSION['Scale']) ? htmlspecialchars($_SESSION['Scale']) : 'Not available'; ?>");
+                    
+                    
+                    console.log("Destino: <?php echo $destination;?>");
+                    console.log("Upload existe: <?php echo is_dir($echographiesPath) ? "SI" : "NO";?>");
+                    console.log("Upload escribible: <?php echo is_writable($echographiesPath) ? "SI" : "NO";?>");
+                    console.log("Directorio actual: <?php echo getcwd(); ?>");
+                    console.log("Upload real: <?php echo realpath($echographiesPath); ?>");
+                    console.log("Permisos: <?php echo substr(sprintf('%o', fileperms($echographiesPath)), -4); ?>");
+                    console.log("Usuario: <?php echo exec('whoami'); ?>");
                 </script>
             <?php endif; ?>
         </div>

@@ -37,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo $Name.' '.$x1.' '.$y1.' '.$x2.' '.$y2.' '.$a1.' '.$b1.' '.$a2.' '.$b2.' '.$height.' '.$width.' '.$evaluatorName.' '.$assessmentCount.' '.$AssessmentUp.' '.$AssessmentDown.'<br>'; 
 
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "C:/venvs/qtoolenv/Scripts/python.exe";
+    $venv_python = "/home/marta/appFlask/venv/bin/python3";
 
     // Build the command to execute the Python script using the virtual environment's Python interpreter
-    $command = "$venv_python E:/UZqTool/uzqtool/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $height $width $evaluatorName $assessmentCount $AssessmentUp $AssessmentDown $user $caseButton 2>&1";
+    $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $height $width $evaluatorName $assessmentCount $AssessmentUp $AssessmentDown $user $caseButton 2>&1";
         
     // Execute the command and capture the output and errors
     exec($command, $output, $returnCode);

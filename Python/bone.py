@@ -27,7 +27,7 @@ user = sys.argv[13]
 echo_type = sys.argv[14]
 
 # Path to the image
-Imgspath = "E:/UZqTool/uzqtool/html/Upload"
+Imgspath = "/var/www/html/Upload"
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
@@ -57,7 +57,7 @@ dilation = morphology.binary_dilation(erosion, footprint=morphology.ellipse(20,1
 # Apply the mask to the original image
 hueso = ROI * dilation
 
-io.imsave('E:/UZqTool/uzqtool/html/Upload/'+Name[:-4]+'-Bone.png',hueso)
+io.imsave('/var/www/html/Upload/'+Name[:-4]+'-Bone.png',hueso)
 
 # Find contours
 contours = measure.find_contours(dilation, 0.5)
@@ -96,7 +96,7 @@ save_var = [time,Name,Eval,Evaluator,Count,len(cnt),Area,Per,Convex,homogeneity,
 print ("The bone processing has been successfully completed")
 
 # Save data
-path = os.path.join("E:/UZqTool/uzqtool/html/DATA/",user,echo_type,"bone.txt")
+path = os.path.join("/var/www/html/DATA/",user,echo_type,"bone.txt")
 with open(path, 'a') as file:
     line = ";".join(map(str, save_var))
     file.writelines(line + '\n')

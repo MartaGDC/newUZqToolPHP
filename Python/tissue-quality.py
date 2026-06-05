@@ -31,7 +31,7 @@ print(_x1, _y1, _x2, _y2, _width, _height)
 #print(Name, _x1, _y2, _width, Eval)
 
 # Path to the image
-Imgspath = "E:/UZqTool/uzqtool/html/Upload"
+Imgspath = "/var/www/html/Upload"
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
@@ -71,7 +71,7 @@ glcm = [features_GLCM[i] for i in glcm_ind]
 
 save_var = [time,Name,Eval,Evaluator,Count,*glcm,*features_GLDS,haar_mean,haar_variance,Point]
 
-folder = "E:/UZqTool/uzqtool/html/DATA/"+user
+folder = "/var/www/html/DATA/"+user
 if not os.path.exists(folder):
     os.mkdir(folder)
 
