@@ -288,6 +288,7 @@ if (isset($_GET['button'])) {
                 <a class="button" href="?button=nerve-longitudinal">Nerve Longitudinal</a>
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "jmp" || $user == "iag"): ?>
                     <a class="button" href="<?= $host ?>:5005/electrolysis?token=<?= urlencode($token) ?>">Electrolysis</a>
+                    <a class="button" href="<?= $host ?>:5005/electrolysis2?token=<?= urlencode($token) ?>">Electrolysis2</a>
                 <?php endif; ?>
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg"): ?>
                     <a class="button" href="?button=muscle">Músculo</a>
@@ -453,6 +454,19 @@ if (isset($_GET['button'])) {
                             <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg" ): ?>
                                 <div class="subprojects-container">
                                     <a class="button" href="<?= $host ?>:5004/proDiafragma?token=<?= urlencode($token) ?>">Diafragma</a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd"): ?>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target="rotuliano" style="z-index:2;">Tendón rotuliano</a>
+                                    <div class="subprojects" style="z-index:1;" id="rotulianoDropdown">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/rotuliano_longitudinal?token=<?= urlencode($token) ?>">Tendón rotuliano longitudinal</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/rotuliano_transversal?token=<?= urlencode($token) ?>">Tendón rotuliano transversal</a>
+
+                                    </div>
+                                </div>
+                                <div class="subprojects-container">
+                                    <a class="button" href="<?= $host ?>:5004/fascia_plantar?token=<?= urlencode($token) ?>">Fascia plantar</a>
                                 </div>
                             <?php endif; ?>
                         </div>
