@@ -101,26 +101,12 @@ else:
 
 ROIS[0] = image [y1:y2, x1:x2]
 ROIS[1] = image [b1:b2, a1:a2]
+
 if echo_type == 'menisco':
     ROIS[2] = image [d1:d2, c1:c2]
 
-print("Imagen:", width, "x", height)
-
-print("ROI 1:", x1, y1, x2, y2)
-print("ROI 2:", a1, b1, a2, b2)
-
-if echo_type == "menisco":
-    print("ROI 3:", c1, d1, c2, d2)
 for i,ROI in enumerate(ROIS):
     # Medidas de la GLDM
-    print(f"\nROI {i}")
-    print(f"Posición: {POS[i]}")
-    print(f"shape = {ROI.shape}")
-    print(f"size = {ROI.size}")
-    print(f"nonzero = {np.count_nonzero(ROI)}")
-    print(f"Puntos = {POINTS[i]}")
-    if ROI.size == 0:
-        raise ValueError(f"ROI {i} está vacía. Puntos: {POINTS[i]}")
     features_GLCM, _, labels_GLCM, _ = pf.glcm_features(ROI, ignore_zeros=True)
 
     # Añadimoslas dos medidas de Haar wavelet
