@@ -1,31 +1,60 @@
 <?php
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+    if ($_SESSION['button'] == 'menisco') {
+        $startPoint1 = json_decode($_POST['startPoint1']);
+        $endPoint1 = json_decode($_POST['endPoint1']);
+        $endPoint2 = json_decode($_POST['endPoint2']);
+        $startPoint2 = json_decode($_POST['startPoint2']); // Decode the JSON string into an array
+        $startPoint3 = json_decode($_POST['startPoint3']);
+        $endPoint3 = json_decode($_POST['endPoint3']);
+
+        $x1 = $startPoint1->x;
+        $y1 = $startPoint1->y;
+        $x2 = $endPoint1->x;
+        $y2 = $endPoint1->y;
+
+        $a1 = $startPoint2->x;
+        $b1 = $startPoint2->y;
+        $a2 = $endPoint2->x;
+        $b2 = $endPoint2->y;
+
+        $c1 = $startPoint3->x;
+        $d1 = $startPoint3->y;
+        $c2 = $endPoint3->x;
+        $d2 = $endPoint3->y;
+
+        $menisco = $_POST['menisco'];
+        $femur = $_POST['femur'];
+        $tibia = $_POST['tibia'];
+    } else {
+        $startPoint1 = json_decode($_POST['startPoint1']);
+        $endPoint1 = json_decode($_POST['endPoint1']);
+        $endPoint2 = json_decode($_POST['endPoint2']);
+        $startPoint2 = json_decode($_POST['startPoint2']); // Decode the JSON string into an array
+        
+        $x1 = $startPoint1->x;
+        $y1 = $startPoint1->y;
+        $x2 = $endPoint1->x;
+        $y2 = $endPoint1->y;
+
+        $a1 = $startPoint2->x;
+        $b1 = $startPoint2->y;
+        $a2 = $endPoint2->x;
+        $b2 = $endPoint2->y;
+
+        $AssessmentUp = $_POST['AssessmentUp'];
+        $AssessmentDown = $_POST['AssessmentDown'];
+    }
+    
     $selectedImage = $_POST['selectedImage'];
-
-    $startPoint1 = json_decode($_POST['startPoint1']);
-    $endPoint1 = json_decode($_POST['endPoint1']);
-    $endPoint2 = json_decode($_POST['endPoint2']);
-    $startPoint2 = json_decode($_POST['startPoint2']); // Decode the JSON string into an array
-
     $evaluatorName = $_POST['evaluatorName'];
     $assessmentCount = $_POST['assessmentCount'];
-    $AssessmentUp = $_POST['AssessmentUp'];
-    $AssessmentDown = $_POST['AssessmentDown'];
+
     $user = $_POST['user'];
-
-
-    $x1 = $startPoint1->x;
-    $y1 = $startPoint1->y;
-    $x2 = $endPoint1->x;
-    $y2 = $endPoint1->y;
-
-
-    $a1 = $startPoint2->x;
-    $b1 = $startPoint2->y;
-    $a2 = $endPoint2->x;
-    $b2 = $endPoint2->y;
-
+   
     $Name = $selectedImage;
 
     $width = $_POST['canvasWidth'];
@@ -40,8 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $venv_python = "/home/marta/appFlask/venv/bin/python3";
 
     // Build the command to execute the Python script using the virtual environment's Python interpreter
-    $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $height $width $evaluatorName $assessmentCount $AssessmentUp $AssessmentDown $user $caseButton 2>&1";
-        
+    if($caseButton == 'menisco'){
+        $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $c1 $d1 $c2 $d2 $height $width $evaluatorName $assessmentCount $menisco $femur $tibia $user $caseButton 2>&1";
+    } else {
+        $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $height $width $evaluatorName $assessmentCount $AssessmentUp $AssessmentDown $user $caseButton 2>&1";
+    }
     // Execute the command and capture the output and errors
     exec($command, $output, $returnCode);
 

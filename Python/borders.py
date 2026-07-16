@@ -15,24 +15,48 @@ now = datetime.now()
 time = now.strftime("%d/%m/%Y-%H:%M:%S")
 
 # Get the variables from command-line arguments
-Name = sys.argv[1]
-_x1 = int(sys.argv[2])
-_y1 = int(sys.argv[3])
-_x2 = int(sys.argv[4])
-_y2 = int(sys.argv[5])
-_a1 = int(sys.argv[6])
-_b1 = int(sys.argv[7])
-_a2 = int(sys.argv[8])
-_b2 = int(sys.argv[9])
+echo_type = sys.argv[-1]
+if echo_type == 'menisco':
+    Name = sys.argv[1]
+    _x1 = int(sys.argv[2])
+    _y1 = int(sys.argv[3])
+    _x2 = int(sys.argv[4])
+    _y2 = int(sys.argv[5])
+    _a1 = int(sys.argv[6])
+    _b1 = int(sys.argv[7])
+    _a2 = int(sys.argv[8])
+    _b2 = int(sys.argv[9])
+    _c1 = int(sys.argv[10])
+    _d1 = int(sys.argv[11])
+    _c2 = int(sys.argv[12])
+    _d2 = int(sys.argv[13])
 
-_height = int(sys.argv[10])
-_width = int(sys.argv[11])
-Evaluator = sys.argv[12]
-Count = sys.argv[13]
-EvalU = sys.argv[14]
-EvalD = sys.argv[15]
-user = sys.argv[16]
-echo_type = sys.argv[17]
+    _height = int(sys.argv[14])
+    _width = int(sys.argv[15])
+    Evaluator = sys.argv[16]
+    Count = sys.argv[17]
+    menisco = sys.argv[18]
+    femur = sys.argv[19]
+    tibia = sys.argv[20]
+    user = sys.argv[21]
+else:
+    Name = sys.argv[1]
+    _x1 = int(sys.argv[2])
+    _y1 = int(sys.argv[3])
+    _x2 = int(sys.argv[4])
+    _y2 = int(sys.argv[5])
+    _a1 = int(sys.argv[6])
+    _b1 = int(sys.argv[7])
+    _a2 = int(sys.argv[8])
+    _b2 = int(sys.argv[9])
+
+    _height = int(sys.argv[10])
+    _width = int(sys.argv[11])
+    Evaluator = sys.argv[12]
+    Count = sys.argv[13]
+    EvalU = sys.argv[14]
+    EvalD = sys.argv[15]
+    user = sys.argv[16]
 
 # # # Load thi image
 Imgspath = "/var/www/html/Upload"
@@ -55,17 +79,48 @@ a2 = int(_a2*width/_width)
 b1 = int(_b1*height/_height)
 b2 = int(_b2*height/_height)
 
+if echo_type == 'menisco':
+    c1 = int(_c1*width/_width)
+    c2 = int(_c2*width/_width)
+    d1 = int(_d1*height/_height)
+    d2 = int(_d2*height/_height)
+
 # Reshape the image to the ROI
-ROIS = [[]]*2
-EVALS = [EvalU,EvalD]
-POS = ['top', 'bottom']
-POINTS =[[[x1,y1],[x2,y2]],[[a1,b1],[a2,b2]]]
+if echo_type == "menisco":
+    ROIS = [None]* 3
+    EVALS = [menisco,femur,tibia]
+    POS = ['menisco','femur','tibia']
+else:
+    ROIS = [None]* 2
+    EVALS = [EvalU,EvalD]
+    POS = ['top', 'bottom']
+if echo_type == 'menisco':
+    POINTS =[[[x1,y1],[x2,y2]],[[a1,b1],[a2,b2]],[[c1,d1],[c2,d2]]]
+else:
+    POINTS =[[[x1,y1],[x2,y2]],[[a1,b1],[a2,b2]]]
 
 ROIS[0] = image [y1:y2, x1:x2]
 ROIS[1] = image [b1:b2, a1:a2]
+if echo_type == 'menisco':
+    ROIS[2] = image [d1:d2, c1:c2]
 
+print("Imagen:", width, "x", height)
+
+print("ROI 1:", x1, y1, x2, y2)
+print("ROI 2:", a1, b1, a2, b2)
+
+if echo_type == "menisco":
+    print("ROI 3:", c1, d1, c2, d2)
 for i,ROI in enumerate(ROIS):
     # Medidas de la GLDM
+    print(f"\nROI {i}")
+    print(f"Posición: {POS[i]}")
+    print(f"shape = {ROI.shape}")
+    print(f"size = {ROI.size}")
+    print(f"nonzero = {np.count_nonzero(ROI)}")
+    print(f"Puntos = {POINTS[i]}")
+    if ROI.size == 0:
+        raise ValueError(f"ROI {i} está vacía. Puntos: {POINTS[i]}")
     features_GLCM, _, labels_GLCM, _ = pf.glcm_features(ROI, ignore_zeros=True)
 
     # Añadimoslas dos medidas de Haar wavelet

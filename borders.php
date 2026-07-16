@@ -7,12 +7,13 @@ session_start();
 $echographiesPath = 'Upload/';
 
 // Check if the image has been submitted
-if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
+if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION['button'])) {
     // Retrieve the selected image filename from the session variable
     $IMAGE = $_SESSION['IMG'];
     $evaluatorName = $_SESSION['EvName'];
     $assessmentCount = $_SESSION['EvCount'];
-    $user = $_SESSION['User'];    
+    $user = $_SESSION['User'];
+    $caseButton = $_SESSION['button'];
 
     // Construct the image path
     $imagePath = $echographiesPath . $IMAGE;
@@ -24,6 +25,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
     $imagePath = '';
 }
 ?>
+
 
 <style>
     .selected-image {
@@ -125,27 +127,62 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
 <body>
     <?php if ($IMAGE !== '') { ?>
-
         <div class="conten-active" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 10px;">
             <div class="form-group">
                 <label for="selected-image">Selected Image: <?php echo $IMAGE ?></label>
                 <button onclick="loadBorderImage()">Reload Image</button>
             </div>
-            <div class="form-group">
-                <label for="assessment-selector">Assessment top:</label>
-                <input type="range" class='slider' name="assessment-u" id="assessment-selector-u" list="values" min='0' max='3' value='2' oninput="updateValue(this.value,'value1')"></input>
-                <div id="value1"></div>
-            </div> 
-            <div class="form-group">
-                <label for="assessment-selector">Assessment bottom:</label>
-                <input type="range" class='slider' name="assessment-u" id="assessment-selector-d" list="values" min='0' max='3' value='2' oninput="updateValue(this.value,'value2')"></input>
-                <div id="value2"></div>
-            </div>
-            <div class='message-box'>
-                Select two rectangles in this order: the top border (red) and the bottom border (cyan) of the tendon
-            </div>  
-        </div>
 
+            <?php if($caseButton !== 'menisco'): ?>
+                <div class="form-group">
+                    <label for="assessment-selector">Assessment top:</label>
+                    <input type="range" class='slider'
+                    name="assessment-u" id="assessment-selector-u"
+                    list="values" min='0' max='3' value='2'
+                    oninput="updateValue(this.value,'value1')"></input>
+                    <div id="value1"></div>
+                </div> 
+                <div class="form-group">
+                    <label for="assessment-selector">Assessment bottom:</label>
+                    <input type="range" class='slider'
+                    name="assessment-u" id="assessment-selector-d"
+                    list="values" min='0' max='3' value='2'
+                    oninput="updateValue(this.value,'value2')"></input>
+                    <div id="value2"></div>
+                </div>
+                <div class='message-box'>
+                    Select two rectangles in this order: the top border (red) and the bottom border (cyan) of the tendon
+                </div>
+            <?php else: ?>
+                <div class="form-group">
+                    <label>Menisco:</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-1"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value1')">
+                    <div id="value1"></div>
+                </div>
+                <div class="form-group">
+                    <label>Fémur</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-2"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value2')">
+                    <div id="value2"></div>
+                </div>
+                <div class="form-group">
+                    <label>Tibia</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-3"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value3')">
+                    <div id="value3"></div>
+                </div>
+                <div class="message-box">
+                    Selecciona 3 rectángulos en este orden: Menisco (red), Fémur (cyan), Tibia (green).
+                </div>
+            <?php endif; ?>
+        </div>
 
         <div style="display: flex; justify-content: center;">
             <div id="image-container">
@@ -180,15 +217,32 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
     <script>
 
+        <?php if($caseButton == 'menisco'){ ?>
+            const numRectangles = 3;
+            const colors = ["red","cyan","lime"];
+        <?php } else { ?>
+            const numRectangles = 2;
+            const colors = ["red","cyan"];
+        <?php } ?>
+
         //functions for sliders
         function updateValue(value, ID) {
             document.getElementById(ID).textContent = value;
         }
-        // Set initial values
-        var defaultValue = document.getElementById('assessment-selector-u').value;
-        updateValue(defaultValue, 'value1');
-        updateValue(defaultValue, 'value2');
 
+        window.onload = function() {
+            <?php if ($caseButton == 'menisco') { ?>
+                updateValue(document.getElementById('structure-selector-1').value, 'value1');
+                updateValue(document.getElementById('structure-selector-2').value, 'value2');
+                updateValue(document.getElementById('structure-selector-3').value, 'value3');
+            <?php } else { ?>
+                var defaultValue = document.getElementById('assessment-selector-u').value;
+                updateValue(defaultValue, 'value1');
+                updateValue(defaultValue, 'value2');
+            <?php } ?>
+            adjustCanvasSize1();
+        }
+        
 
         var canvas = document.getElementById('image-canvas-1');
         var ctx = canvas.getContext('2d');
@@ -200,6 +254,9 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
         // Function to handle mouse down event
         function handleMouseDown(event) {
+            if(rectangles.length >= numRectangles) {
+                return;
+            }
             var x = event.offsetX;
             var y = event.offsetY;
 
@@ -221,7 +278,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
                 // Draw the rectangle
                 ctx.beginPath();
-                ctx.strokeStyle = rectangles.length % 2 === 0 ? 'red' : 'cyan'; // Alternate between red and blue colors
+                ctx.strokeStyle = colors[rectangles.length];  // Alternate between red and blue colors
                 ctx.lineWidth = 2;
                 ctx.rect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
                 ctx.stroke();
@@ -263,7 +320,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                 for (var i = 0; i < rectangles.length; i++) {
                     var rect = rectangles[i];
                     ctx.beginPath();
-                    ctx.strokeStyle = i % 2 === 0 ? 'red' : 'cyan';
+                    ctx.strokeStyle = colors[i];
                     ctx.lineWidth = 2;
                     ctx.rect(rect.x, rect.y, rect.width, rect.height);
                     ctx.stroke();
@@ -271,7 +328,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
                 // Draw the current rectangle outline
                 ctx.beginPath();
-                ctx.strokeStyle = rectangles.length % 2 === 0 ? 'red' : 'cyan';
+                ctx.strokeStyle = colors[rectangles.length];
                 ctx.lineWidth = 2;
                 ctx.rect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
                 ctx.stroke();
@@ -300,8 +357,8 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
         function sendData() {
             // Check if any rectangles are drawn
-            if (rectangles.length === 0) {
-                alert('Please draw two rectangles.');
+            if(rectangles.length != numRectangles) {
+                alert('Please draw ' + numRectangles + ' rectangles.');
                 return;
             }
 
@@ -319,26 +376,40 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
             var selectedImage = '<?php echo $IMAGE ?>';  // Access the PHP variable
             var evaluatorName = '<?php echo $evaluatorName ?>';  // Access the PHP variable
             var assessmentCount = '<?php echo $assessmentCount ?>';  // Access the PHP variable
-            var AssessmentUp = document.getElementById('assessment-selector-u').value;
-            var AssessmentDown = document.getElementById('assessment-selector-d').value;
             var user = '<?php echo $user ?>';
             // console.log(endPoint2)
 
             // Create a FormData object and append the data
             var formData = new FormData();
             formData.append('selectedImage', selectedImage);
-
-            formData.append('startPoint1', startPoint1);
-            formData.append('endPoint1', endPoint1);
-            formData.append('startPoint2', startPoint2);
-            formData.append('endPoint2', endPoint2);
+            
+            for(var i=0;i<numRectangles;i++){
+                let startPoint = JSON.stringify({
+                    x:rectangles[i].x,
+                    y:rectangles[i].y
+                });
+                let endPoint = JSON.stringify({
+                    x:rectangles[i].x+rectangles[i].width,
+                    y:rectangles[i].y+rectangles[i].height
+                });
+                formData.append("startPoint"+(i+1),startPoint);
+                formData.append("endPoint"+(i+1),endPoint);
+            }
 
             formData.append('canvasWidth', canvasWidth);
             formData.append('canvasHeight', canvasHeight);
             formData.append('evaluatorName', evaluatorName);
             formData.append('assessmentCount', assessmentCount);
-            formData.append('AssessmentUp', AssessmentUp);
-            formData.append('AssessmentDown', AssessmentDown);
+
+            <?php if($caseButton == 'menisco'){ ?>
+                formData.append('menisco', document.getElementById('structure-selector-1').value);
+                formData.append('femur', document.getElementById('structure-selector-2').value);
+                formData.append('tibia', document.getElementById('structure-selector-3').value);
+            <?php } else { ?>
+                formData.append('AssessmentUp', document.getElementById('assessment-selector-u').value);
+                formData.append('AssessmentDown', document.getElementById('assessment-selector-d').value);
+            <?php } ?>
+
             formData.append('user',user);
 
             // Send an AJAX request to the PHP script

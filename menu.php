@@ -293,6 +293,9 @@ if (isset($_GET['button'])) {
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg"): ?>
                     <a class="button" href="?button=muscle">Músculo</a>
                 <?php endif; ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == "bcd"): ?>
+                    <a class="button" href="?button=menisco">Menisco</a>
+                <?php endif; ?>
             </div>
         </div>
         <!-- Automático -->
@@ -456,7 +459,7 @@ if (isset($_GET['button'])) {
                                     <a class="button" href="<?= $host ?>:5004/proDiafragma?token=<?= urlencode($token) ?>">Diafragma</a>
                                 </div>
                             <?php endif; ?>
-                            <?php if ($user == "mmu" || $user == "mgd"): ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr"  || $user == "iac"): ?>
                                 <div class="subprojects-container">
                                     <a class="button subproject-option" data-target="rotuliano" style="z-index:2;">Tendón rotuliano</a>
                                     <div class="subprojects" style="z-index:1;" id="rotulianoDropdown">

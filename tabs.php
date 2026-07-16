@@ -23,6 +23,9 @@ require_once 'auth_check.php';
             case 'muscle':
                 $activateTab = FALSE;
                 break;
+            case 'menisco':
+                $activateTab = FALSE;
+                break;
         }
     }
 ?>
