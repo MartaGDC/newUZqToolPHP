@@ -8,12 +8,13 @@ session_start();
 $echographiesPath = 'Upload/';
 
 // Check if the image has been submitted
-if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
+if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION['button'])) {
     // Retrieve the selected image filename from the session variable
     $IMAGE = $_SESSION['IMG'];
     $evaluatorName = $_SESSION['EvName'];
     $assessmentCount = $_SESSION['EvCount'];
     $user = $_SESSION['User'];
+    $caseButton = $_SESSION['button'];
 
     // Construct the image path
     $imagePath = $echographiesPath . $IMAGE;
@@ -135,14 +136,48 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                 <label for='selected-image'>Selected Image: <?php echo $IMAGE ?></label>
                 <button onclick="loadTissueImage()">Reload Image</button>
             </div>
-            <div class="form-group">
-                <label for="assessment-selector">Assessment:</label>
-                <input type="range" class='slider' name="assessment" id="assessment-selector" list="values" min='0' max='3' value='2' oninput="updateValue(this.value,'value')"></input>
-                <div id="value"></div>
-            </div> 
-            <div class='message-box'>
-                Select one rectangle representative of the tissue quality
-            </div>  
+
+            <?php if($caseButton !== 'sarcopenia'): ?>
+                <div class="form-group">
+                    <label for="assessment-selector">Assessment:</label>
+                    <input type="range" class='slider'
+                    name="assessment" id="assessment-selector"
+                    list="values" min='0' max='3' value='2'
+                    oninput="updateValue(this.value,'value')"></input>
+                    <div id="value"></div>
+                </div> 
+                <div class='message-box'>
+                    Select one rectangle representative of the tissue quality
+                </div>
+            <?php else: ?>
+                <div class="form-group">
+                    <label>Recto femoral:</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-1"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value1')">
+                    <div id="value1"></div>
+                </div>
+                <div class="form-group">
+                    <label>Vasto intermedio:</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-2"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value2')">
+                    <div id="value2"></div>
+                </div>
+                <div class="form-group">
+                    <label>Grasa subcutánea:</label>
+                    <input
+                        type="range" class="slider" id="structure-selector-3"
+                        list="values" min="0" max="3" value="2"
+                        oninput="updateValue(this.value,'value3')">
+                    <div id="value3"></div>
+                </div>
+                <div class="message-box">
+                    Selecciona 3 rectángulos en este orden: Recto femoral (red), Vasto intermedio (cyan), Grasa subcutánea (green).
+                </div>
+            <?php endif; ?>
         </div>
 
         <div style="display: flex; justify-content: center;">
@@ -153,7 +188,8 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
         </div>
         <br>
         <!--<div style="display: flex; justify-content: center;" id="image-info"></div>-->
-        <div style="display: flex; justify-content: center;" id="rectangle-coordinates"></div>
+        <!--<div style="display: flex; justify-content: center;" id="rectangle-coordinates"></div>-->
+
 
         <div class="form-group" style="display: flex; justify-content: center;">
             <button onclick="sendData()">Compute Data</button>
@@ -176,23 +212,45 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
     <script>
 
+        <?php if($caseButton == 'sarcopenia'){ ?>
+            const numRectangles = 3;
+            const colors = ["red","cyan","lime"];
+        <?php } else { ?>
+            const numRectangles = 1;
+            const colors = ["red"];
+        <?php } ?>
+
         //functions for sliders
         function updateValue(value, ID) {
             document.getElementById(ID).textContent = value;
         }
-        // Set initial values
-        var defaultValue = document.getElementById('assessment-selector').value;
-        updateValue(defaultValue, 'value');
+
+        window.onload = function() {
+            <?php if ($caseButton == 'menisco') { ?>
+                updateValue(document.getElementById('structure-selector-1').value, 'value1');
+                updateValue(document.getElementById('structure-selector-2').value, 'value2');
+                updateValue(document.getElementById('structure-selector-3').value, 'value3');
+            <?php } else { ?>
+                var defaultValue = document.getElementById('assessment-selector').value;
+                updateValue(defaultValue, 'value');
+            <?php } ?>
+            adjustCanvasSize1();
+        }
 
 
         var canvas = document.getElementById('image-canvas-1');
         var ctx = canvas.getContext('2d');
         var isDrawing = false;
         var startPoint, endPoint, img;
-        var rectCoordinates = document.getElementById('rectangle-coordinates');
+        // var rectCoordinates = document.getElementById('rectangle-coordinates');
+        var rectangles = []; // Initialize the rectangles array
+        var rectCount = 0;
 
         // Function to handle mouse down event
         function handleMouseDown(event) {
+            if(rectangles.length >= numRectangles) {
+                return;
+            }
             var x = event.offsetX;
             var y = event.offsetY;
 
@@ -214,7 +272,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
                 // Draw the rectangle
                 ctx.beginPath();
-                ctx.strokeStyle = 'red';
+                ctx.strokeStyle = colors[rectangles.length];
                 ctx.lineWidth = 2;
                 ctx.rect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
                 ctx.stroke();
@@ -225,7 +283,18 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                 // Display the coordinates of the rectangle
                 var rectWidth = Math.abs(endPoint.x - startPoint.x);
                 var rectHeight = Math.abs(endPoint.y - startPoint.y);
-                rectCoordinates.innerHTML = 'Rectangle Coordinates: x=' + startPoint.x + ', y=' + startPoint.y + ', width=' + rectWidth + ', height=' + rectHeight;
+                // rectCoordinates.innerHTML = 'Rectangle Coordinates: x=' + startPoint.x + ', y=' + startPoint.y + ', width=' + rectWidth + ', height=' + rectHeight;
+                
+                var rectangle = {
+                    x: startPoint.x,
+                    y: startPoint.y,
+                    width: rectWidth,
+                    height: rectHeight
+                };
+                // Push the rectangle object into the rectangles array
+                rectangles.push(rectangle);
+                // Increment the rectangle count
+                rectCount++;
             }
         }
 
@@ -238,9 +307,19 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                 // Clear the canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                // Redraw previously drawn rectangles
+                for (var i = 0; i < rectangles.length; i++) {
+                    var rect = rectangles[i];
+                    ctx.beginPath();
+                    ctx.strokeStyle = colors[i];
+                    ctx.lineWidth = 2;
+                    ctx.rect(rect.x, rect.y, rect.width, rect.height);
+                    ctx.stroke();
+                }
+
                 // Draw the rectangle outline
                 ctx.beginPath();
-                ctx.strokeStyle = 'red';
+                ctx.strokeStyle = colors[rectangles.length];
                 ctx.lineWidth = 2;
                 ctx.rect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
                 ctx.stroke();
@@ -257,7 +336,6 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
         // Function to load the image
         function loadTissueImage() {
-
             window.location.reload();
         }
 
@@ -270,27 +348,50 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
         // Function to send data to the PHP script
         function sendData() {
-            // Get the start and end points of the rectangle
-            startPoint = JSON.stringify({ x: startPoint.x, y: startPoint.y });
-            endPoint = JSON.stringify({ x: endPoint.x, y: endPoint.y });
+            // Check if any rectangles are drawn
+            if(rectangles.length != numRectangles) {
+                alert('Please draw ' + numRectangles + ' rectangles.');
+                return;
+            }
+
+            // Get the dimensions of the canvas
+            var canvasWidth = canvas.width;
+            var canvasHeight = canvas.height;
+
             dimensions = JSON.stringify({width: img.width, height: img.height})
+
             var selectedImage = '<?php echo $IMAGE ?>';  // Access the PHP variable
             var evaluatorName = '<?php echo $evaluatorName ?>';  // Access the PHP variable
             var assessmentCount = '<?php echo $assessmentCount ?>';  // Access the PHP variable
-            var selectedAssessment = document.getElementById('assessment-selector').value;
             var user = '<?php echo $user ?>';
 
             // Create a FormData object and append the start and end points
             var formData = new FormData();
             formData.append('selectedImage', selectedImage);
-            formData.append('startPoint', startPoint);
-            formData.append('endPoint', endPoint);
+            for(var i=0; i<numRectangles;i++) {
+                let startPoint = JSON.stringify({
+                    x:rectangles[i].x,
+                    y:rectangles[i].y
+                });
+                let endPoint = JSON.stringify({
+                    x:rectangles[i].x+rectangles[i].width,
+                    y:rectangles[i].y+rectangles[i].height
+                });
+                formData.append("startPoint"+(i+1),startPoint);
+                formData.append("endPoint"+(i+1),endPoint);
+            }
             formData.append('dimensions', dimensions);
             formData.append('evaluatorName', evaluatorName);
             formData.append('assessmentCount', assessmentCount);
-            formData.append('selectedAssessment', selectedAssessment);
+            <?php if($caseButton == 'sarcopenia'){ ?>
+                formData.append('recto', document.getElementById('structure-selector-1').value);
+                formData.append('vasto', document.getElementById('structure-selector-2').value);
+                formData.append('grasa', document.getElementById('structure-selector-3').value);
+            <?php } else { ?>
+                formData.append('selectedAssessment', document.getElementById('assessment-selector').value);
+            <?php } ?>
+
             formData.append('user',user);
-            
 
             // Send an AJAX request to the PHP script
             var xhr = new XMLHttpRequest();
@@ -304,7 +405,11 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
             };
 
             xhr.send(formData);
-            window.parent.enableBordersTab();
+            <?php if ($caseButton == 'sarcopenia') { ?>
+                window.parent.enableMorphologyRectoTab();
+            <?php } else { ?>
+                window.parent.enableMorphologyTab();
+            <?php } ?>
         }
 
 

@@ -9,6 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Scale = $_POST['Scale'];
     $user = $_POST['user'];
     $caseButton = $_SESSION['button'];
+    if ($caseButton=='sarcopenia') {
+        $estructura = $_POST['estructura'];
+    }
     // echo 'session:'.$caseButton;
 
     // echo 'scale:'.$Scale.'<br>';
@@ -26,8 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Build the command to execute the Python script using the virtual environment's Python interpreter
         $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
     }
-    if ($caseButton == 'muscle'){
+    if ($caseButton == 'muscle') {
         $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+    }
+    if ($caseButton == 'sarcopenia') {
+        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $estructura $user $caseButton 2>&1";
     }
     else{
         $command = "$venv_python /var/www/html/Python/morphology.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";

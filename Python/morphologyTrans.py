@@ -12,16 +12,26 @@ import numpy as np
 from datetime import datetime
 
 # Get the variables from command-line arguments
-
-Name = sys.argv[1]
-_height = int(sys.argv[2])
-_width = int(sys.argv[3])
-Evaluator = sys.argv[4]
-Count = sys.argv[5]
-Eval = sys.argv[6]
-_scale = float(sys.argv[7])
-user = sys.argv[8]
-echo_type = sys.argv[9]
+echo_type = sys.argv[-1]
+if echo_type == 'sarcopenia':
+    Name = sys.argv[1]
+    _height = int(sys.argv[2])
+    _width = int(sys.argv[3])
+    Evaluator = sys.argv[4]
+    Count = sys.argv[5]
+    Eval = sys.argv[6]
+    _scale = float(sys.argv[7])
+    estructura = sys.argv[8]
+    user = sys.argv[9]
+else:
+    Name = sys.argv[1]
+    _height = int(sys.argv[2])
+    _width = int(sys.argv[3])
+    Evaluator = sys.argv[4]
+    Count = sys.argv[5]
+    Eval = sys.argv[6]
+    _scale = float(sys.argv[7])
+    user = sys.argv[8]
 
 # Cargamos puntos del fichero
 polygon_path = "/var/www/html/PHP/polygon.txt"
@@ -87,7 +97,10 @@ perimeter_json = json.dumps(perimeter_list)
 now = datetime.now()
 time = now.strftime("%d/%m/%Y-%H:%M:%S")
 
-save_var = [time,Name,Eval,Evaluator,Count,area,per,max_width,max_height,ratio,perimeter_json]
+if echo_type !='sarcopenia':
+    save_var = [time,Name,Eval,Evaluator,Count,area,per,max_width,max_height,ratio,perimeter_json]
+else:
+    save_var = [time,Name,Eval,Evaluator,estructura,Count,area,per,max_width,max_height,ratio,perimeter_json]
 # ###############
 
 

@@ -293,6 +293,9 @@ if (isset($_GET['button'])) {
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg"): ?>
                     <a class="button" href="?button=muscle">Músculo</a>
                 <?php endif; ?>
+                <?php if ($user == "mmu" || $user == "mgd" || $user == 'srr'): ?>
+                    <a class="button" href="?button=sarcopenia">Sarcopenia</a>
+                <?php endif; ?>
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "bcd"): ?>
                     <a class="button" href="?button=menisco">Menisco</a>
                 <?php endif; ?>

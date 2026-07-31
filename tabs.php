@@ -23,6 +23,9 @@ require_once 'auth_check.php';
             case 'muscle':
                 $activateTab = FALSE;
                 break;
+            case 'sarcopenia':
+                $activateTab = FALSE;
+                break;
             case 'menisco':
                 $activateTab = FALSE;
                 break;
@@ -302,15 +305,19 @@ require_once 'auth_check.php';
             <div class="tabs">
                 <div class="tab">Select File</div>
                 <div class="tab disabled" id="tab-tissue">Tissue Quality</div>
-                <div class="tab disabled" id="tab-borders">Borders</div>
-                <div class="tab disabled" id="tab-morphology">Morphology</div>
-                <?php
-                if ($activateTab){
-                ?>
+                <?php if ($caseButton !='sarcopenia') {?>
+                    <div class="tab disabled" id="tab-borders">Borders</div>
+                    <div class="tab disabled" id="tab-morphology">Morphology</div>
+                <?php } ?>
+                <?php if ($caseButton =='sarcopenia') {?>
+                    <div class="tab disabled" id="tab-morphology-recto">Morphology Recto</div>
+                    <div class="tab disabled" id="tab-morphology-vasto">Morphology Vasto</div>
+                    <div class="tab disabled" id="tab-morphology-grasa">Morphology Grasa</div>
+                <?php } ?>
+                
+                <?php if ($activateTab){ ?>
                     <div class="tab disabled" id="tab-bone">Bone</div>
-                <?php
-                }   
-                ?>           
+                <?php } ?>           
                 <div class="summary disabled" id="tab-summary">Summary</div>
             </div>
             <div class="end-button-container"> 
@@ -326,28 +333,37 @@ require_once 'auth_check.php';
         <div class="content">
             <iframe id="tissue-iframe" src="./tissue-quality.php" width="100%" frameborder="0"></iframe>
         </div>
-        <div class="content">
-            <iframe src="./borders.php" width="100%" frameborder="0"></iframe>
-        </div>
-        <div class="content">
-            <iframe src="./morphology.php" width="100%" frameborder="0"></iframe>
-        </div>
-        <?php
-            if ($activateTab){
-        ?>
+        <?php if ($caseButton !='sarcopenia') {?>
+            <div class="content">
+                <iframe src="./borders.php" width="100%" frameborder="0"></iframe>
+            </div>
+            <div class="content">
+                <iframe src="./morphology.php" width="100%" frameborder="0"></iframe>
+            </div>
+         <?php } ?>
+        <?php if ($caseButton =='sarcopenia') {?>
+            <div class="content">
+                <iframe src="./morphology_recto.php" width="100%" frameborder="0"></iframe>
+            </div>
+            <div class="content">
+                <iframe src="./morphology_vasto.php" width="100%" frameborder="0"></iframe>
+            </div>
+            <div class="content">
+                <iframe src="./morphology_grasa.php" width="100%" frameborder="0"></iframe>
+            </div>
+        <?php } ?>
+        <?php if ($activateTab){ ?>
             <div class="content">
                 <iframe src="./bone.php" width="100%" frameborder="0"></iframe>
             </div>
-        <?php
-        }
-        ?>
+        <?php } ?>
         <div class="content">
             <iframe src="./summary.php" width="100%" frameborder="0"></iframe>
         </div>
 
         <div class="navigation-arrows">
-                <button id="prev-button" disabled><<</button>
-                <button id="next-button" disabled>>></button>
+            <button id="prev-button" disabled><<</button>
+            <button id="next-button" disabled>>></button>
         </div>
     </div>
     <footer style="text-align: center; background-color: #f2f2f2;">
@@ -377,6 +393,19 @@ require_once 'auth_check.php';
         const tabMorphology = document.getElementById('tab-morphology');
 
         // Enable the next tab and remove the "disabled" class
+        tabMorphology.classList.remove('disabled');
+    }
+
+    function enableMorphologyRectoTab() {
+        const tabMorphology = document.getElementById('tab-morphology-recto');
+        tabMorphology.classList.remove('disabled');
+    }
+    function enableMorphologyVastoTab() {
+        const tabMorphology = document.getElementById('tab-morphology-vasto');
+        tabMorphology.classList.remove('disabled');
+    }
+    function enableMorphologyGrasaTab() {
+        const tabMorphology = document.getElementById('tab-morphology-grasa');
         tabMorphology.classList.remove('disabled');
     }
 
