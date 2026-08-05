@@ -408,7 +408,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
             <?php if ($caseButton == 'sarcopenia') { ?>
                 window.parent.enableMorphologyRectoTab();
             <?php } else { ?>
-                window.parent.enableMorphologyTab();
+                window.parent.enableBordersTab();
             <?php } ?>
         }
 
