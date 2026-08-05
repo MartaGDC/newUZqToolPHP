@@ -475,6 +475,11 @@ if (isset($_GET['button'])) {
                                     <a class="button" href="<?= $host ?>:5004/fascia_plantar?token=<?= urlencode($token) ?>">Fascia plantar</a>
                                 </div>
                             <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "iac" || $user == 'ebg' || $user == 'jpr' || $user == 'pfm' || $user == 'jmp' || $user == 'gcf' || $user == 'acm' || $user == 'ira') : ?>
+                                <div class="subprojects-container">
+                                    <a class="button" href="<?= $host ?>:5004/UNITA_cartilago?token=<?= urlencode($token) ?>">UNITA-Cartílago</a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
