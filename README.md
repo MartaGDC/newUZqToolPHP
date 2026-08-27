@@ -30,5 +30,5 @@ Todos los cálculos se guardan en un txt independiente por evaluador y por proye
 1. Autenticación: a partir de una tabla en la base de datos de postgres de la aplicación. 
 
 2. Menú: 
-- Manual UZqTool 1: Contiene los proyectos anteriores tendón, nervio longitudinal y nervio transversal, a los que se han ido añadiendo proyectos con una estructura similar. Según el proyecto hay más rectángulos y diferentes apartados, pero los cálculos son esencialmente los mimsos. A excepción de Electrolysis que ha sido programado en Flask con interfaz más similar al de UZink, aunque reproduciendo los cálculos de estos proyectos.
+- Manual UZqTool 1: Contiene los proyectos anteriores: tendón, nervio longitudinal y nervio transversal, a los que se han ido añadiendo proyectos con una estructura similar. Según el proyecto hay más rectángulos y diferentes apartados, pero los cálculos son esencialmente los mimsos. A excepción de Electrolysis que ha sido programado en Flask con interfaz más similar al de UZink, aunque reproduciendo los cálculos de estos proyectos.
 - UZink: los proyectos anteriormente mencionados en Flask no están en funcionamiento actualmente. En su lugar hay diferentes proyectos similares a nivel de código funcionando desde un mismo puerto. No se encuentran en este repositorio.
