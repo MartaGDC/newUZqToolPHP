@@ -323,6 +323,7 @@ if (isset($_GET['button'])) {
                             <a class="button" href="<?= $host ?>:5004/base_artefactos?token=<?= urlencode($token) ?>">Artefactos</a>
                             <a class="button" href="<?= $host ?>:5004/base_ROIS?token=<?= urlencode($token) ?>">ROIs y ROPs</a>
                             <a class="button" href="<?= $host ?>:5004/base_marco?token=<?= urlencode($token) ?>">Marco y escala</a>
+                            <a class="button" href="<?= $host ?>:5004/base_tejidosSuperf?token=<?= urlencode($token) ?>">Tejidos Superficiales</a>
                         </div>
                     </div>
                 <?php endif; ?>
