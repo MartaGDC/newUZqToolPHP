@@ -291,7 +291,6 @@ if (isset($_GET['button'])) {
                 <a class="button" href="?button=nerve-longitudinal">Nerve Longitudinal</a>
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "jmp" || $user == "iag"): ?>
                     <a class="button" href="<?= $host ?>:5005/electrolysis?token=<?= urlencode($token) ?>">Electrolysis</a>
-                    <a class="button" href="<?= $host ?>:5005/electrolysis2?token=<?= urlencode($token) ?>">Electrolysis2</a>
                 <?php endif; ?>
                 <?php if ($user == "mmu" || $user == "mgd" || $user == "sjg"): ?>
                     <a class="button" href="?button=muscle">Músculo</a>
