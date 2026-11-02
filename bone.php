@@ -2,8 +2,6 @@
 require_once 'auth_check.php';
 
 error_reporting(E_ALL); 
-// Start the session
-session_start();
 
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
@@ -133,7 +131,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
         <div class="conten-active" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
             <div class="form-group">
                 <label for='selected-image'>Selected Image: <?php echo $IMAGE ?></label>
-                <button onclick="loadTissueImage()">Reload Image</button>
+                <button onclick="loadImage()">Reload Image</button>
             </div>
             <div class="form-group">
                 <label for='evaluator'>Evaluator:</label>
@@ -142,7 +140,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
             <div class="form-group">
                 <label for="threshold-selector">Threshold:</label>
-                <input type="range" name="threshold" id="threshold-selector" min="1" max="256" value="95" oninput="updateThreshold(this.value)">
+                <input type="range" name="threshold" id="threshold-selector" min="1" max="254" value="95" oninput="updateThreshold(this.value)">
                 <div id="threshold-value">95</div>
             </div>
             <div class='message-box'>
@@ -204,20 +202,22 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
         // Create a temporary canvas to draw the image
         var canvasElement = document.createElement('canvas');
         var context = canvasElement.getContext('2d');
-        canvasElement.width = 700;
-        canvasElement.height = 500;
-        context.drawImage(imageElement, 0, 0, 700, 500);
+        var w = imageElement.width || 700;
+        var h = imageElement.height || 500;
+        canvasElement.width = w;
+        canvasElement.height = h;
+        context.drawImage(imageElement, 0, 0, w, h);
 
         // Get the image data
-        var imageData = context.getImageData(0, 0, 700, 500);
+        var imageData = context.getImageData(0, 0, w, h);
         var data = imageData.data;
 
         // Apply the threshold to the image data
         var thresholdValue = threshold ;
         var len = data.length;
         for (var i = 0; i < len; i += 4) {
-            var gray = data[i]; // Grayscale value (red channel since it's a black and white image)
-            var color = gray < thresholdValue ? 0 : 255;
+            var gray = Math.round(0.2125 * data[i] + 0.7154 * data[i + 1] + 0.0721 * data[i + 2]); // Grayscale luminance matching skimage
+            var color = gray <= thresholdValue ? 0 : 255;
 
             data[i] = color; // red
             data[i + 1] = color; // green

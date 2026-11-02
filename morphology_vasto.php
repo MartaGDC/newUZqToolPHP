@@ -1,7 +1,5 @@
 <?php
 require_once 'auth_check.php';
-// Start the session
-session_start();
 
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
@@ -15,8 +13,6 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
     $Scale = $_SESSION['Scale'];
     $user = $_SESSION['User'];
     $caseButton = $_SESSION['button'];
-
-    echo 'cas0'.$caseButton.'<br>';
 
 
     // Construct the image path
@@ -220,7 +216,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function displayImageInfo() {
             img = document.querySelector('.selected-image');
             var imageInfo = 'Image Size: ' + img.width + 'px x ' + img.height + 'px';
-            document.getElementById('image-info').textContent = imageInfo;
+            var infoEl = document.getElementById('image-info');
+            if (infoEl) {
+                infoEl.textContent = imageInfo;
+            }
         }
 
         // Function to update the value of a slider
@@ -276,6 +275,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Function to send data to the PHP script
         function sendData() {
+            if (points.length < 3) {
+                alert('Please draw a polygon with at least 3 points.');
+                return;
+            }
             var dimensions = JSON.stringify({ width: img.width, height: img.height });
             var selectedImage = '<?php echo $IMAGE ?>';
             var evaluatorName = '<?php echo $evaluatorName ?>';
@@ -284,10 +287,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             var Scale = '<?php echo $Scale ?>';
             var user = '<?php echo $user ?>';
 
-            // Save the polygon coordinates before sending data
-            savePolygonCoordinates();
+            var coordinates = 'Polygon Coordinates:\n';
+            for (var i = 0; i < points.length; i++) {
+                coordinates += `${points[i].x}\t${points[i].y}\n`;
+            }
 
             var formData = new FormData();
+            formData.append('coordinates', coordinates);
             formData.append('selectedImage', selectedImage);
             formData.append('dimensions', dimensions);
             formData.append('evaluatorName', evaluatorName);
@@ -303,11 +309,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     document.getElementById('result').innerHTML = xhr.responseText;
                     alert(xhr.responseText);
+                    if (xhr.responseText.indexOf('✅') !== -1) {
+                        window.parent.enableMorphologyGrasaTab();
+                    }
                 }
             };
 
             xhr.send(formData);
-            window.parent.enableMorphologyGrasaTab();
         }
 
 

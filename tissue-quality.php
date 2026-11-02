@@ -1,9 +1,6 @@
 <?php
 require_once 'auth_check.php';
 
-// Start the session
-session_start();
-
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
 
@@ -226,7 +223,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
         }
 
         window.onload = function() {
-            <?php if ($caseButton == 'menisco') { ?>
+            <?php if ($caseButton == 'sarcopenia') { ?>
                 updateValue(document.getElementById('structure-selector-1').value, 'value1');
                 updateValue(document.getElementById('structure-selector-2').value, 'value2');
                 updateValue(document.getElementById('structure-selector-3').value, 'value3');
@@ -234,7 +231,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
                 var defaultValue = document.getElementById('assessment-selector').value;
                 updateValue(defaultValue, 'value');
             <?php } ?>
-            adjustCanvasSize1();
+            adjustCanvasSize();
         }
 
 
@@ -286,8 +283,8 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
                 // rectCoordinates.innerHTML = 'Rectangle Coordinates: x=' + startPoint.x + ', y=' + startPoint.y + ', width=' + rectWidth + ', height=' + rectHeight;
                 
                 var rectangle = {
-                    x: startPoint.x,
-                    y: startPoint.y,
+                    x: Math.min(startPoint.x, endPoint.x),
+                    y: Math.min(startPoint.y, endPoint.y),
                     width: rectWidth,
                     height: rectHeight
                 };
@@ -343,7 +340,10 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
         function displayImageInfo() {
             img = document.querySelector('.selected-image');
             var imageInfo = 'Image Size: ' + img.width + 'px x ' + img.height + 'px';
-            document.getElementById('image-info').textContent = imageInfo;
+            var infoEl = document.getElementById('image-info');
+            if (infoEl) {
+                infoEl.textContent = imageInfo;
+            }
         }
 
         // Function to send data to the PHP script
@@ -401,15 +401,17 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'], $_SESSION
                     // Update the result element with the response
                     document.getElementById('result').innerHTML = xhr.responseText;
                     alert(xhr.responseText);
+                    if (xhr.responseText.indexOf('✅') !== -1) {
+                        <?php if ($caseButton == 'sarcopenia') { ?>
+                            window.parent.enableMorphologyRectoTab();
+                        <?php } else { ?>
+                            window.parent.enableBordersTab();
+                        <?php } ?>
+                    }
                 }
             };
 
             xhr.send(formData);
-            <?php if ($caseButton == 'sarcopenia') { ?>
-                window.parent.enableMorphologyRectoTab();
-            <?php } else { ?>
-                window.parent.enableBordersTab();
-            <?php } ?>
         }
 
 

@@ -1,8 +1,6 @@
 <?php
 require_once 'auth_check.php';
 
-session_start();
-
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
 
@@ -14,15 +12,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check if the file is uploaded successfully
         if ($file['error'] === UPLOAD_ERR_OK) {
             $fileName = basename($file['name']);
-            $destination = $echographiesPath . $fileName;
-
-            // Move the uploaded file to the echographies folder
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                // File moved successfully
-                // Rest of the code
+            $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            if (!in_array($ext, ['png', 'bmp', 'tif', 'tiff'])) {
+                echo "Error: Only lossless image formats (.png, .bmp, .tif, .tiff) are allowed.";
+                unset($file);
             } else {
-                // Failed to move the file
-                echo "Error moving the uploaded file.";
+                $destination = $echographiesPath . $fileName;
+
+                // Move the uploaded file to the echographies folder
+                if (move_uploaded_file($file['tmp_name'], $destination)) {
+                    // File moved successfully
+                    // Rest of the code
+                } else {
+                    // Failed to move the file
+                    echo "Error moving the uploaded file.";
+                }
             }
         } else {
             // File upload error
@@ -219,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <img id="re-selected" src="<?php echo $echographiesPath . $_SESSION['IMG']; ?>" alt="Re-Selected" class="selected-image">
                     </div>
                 <?php } else { ?>
-                    <input type="file" name="uploaded-file" id="uploaded-file" required>
+                    <input type="file" name="uploaded-file" id="uploaded-file" accept=".png,.bmp,.tif,.tiff,image/png" required>
                 <?php } ?>
             </div>
         </div>
@@ -294,7 +298,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     console.log("Directorio actual: <?php echo getcwd(); ?>");
                     console.log("Upload real: <?php echo realpath($echographiesPath); ?>");
                     console.log("Permisos: <?php echo substr(sprintf('%o', fileperms($echographiesPath)), -4); ?>");
-                    console.log("Usuario: <?php echo exec('whoami'); ?>");
                 </script>
             <?php endif; ?>
         </div>

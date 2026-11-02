@@ -1,7 +1,5 @@
 <?php
 require_once 'auth_check.php';
-// Start the session
-session_start();
 
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
@@ -176,7 +174,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
         <div style="display: flex; justify-content: center; align-items: center; height: 50px;">
             <div class="form-group">
                 <label for='if not image'>No image selected. Please click the button to load the image.</label>
-                <button onclick="loadTissueImage()">Load Image</button>
+                <button onclick="loadBorderImage()">Load Image</button>
             </div>
         </div>
     <?php } ?>
@@ -237,7 +235,9 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                 // Display the coordinates of the rectangle
                 var rectWidth = Math.abs(endPoint.x - startPoint.x);
                 var rectHeight = Math.abs(endPoint.y - startPoint.y);
-                rectCoordinates.innerHTML = 'Rectangle Coordinates: x=' + startPoint.x + ', y=' + startPoint.y + ', width=' + rectWidth + ', height=' + rectHeight;
+                if (rectCoordinates) {
+                    rectCoordinates.innerHTML = 'Rectangle Coordinates: x=' + Math.min(startPoint.x, endPoint.x) + ', y=' + Math.min(startPoint.y, endPoint.y) + ', width=' + rectWidth + ', height=' + rectHeight;
+                }
             }
         }
 
@@ -271,15 +271,22 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
         function displayImageInfo() {
             img = document.querySelector('.selected-image');
             var imageInfo = 'Image Size: ' + img.width + 'px x ' + img.height + 'px';
-            document.getElementById('image-info').textContent = imageInfo;
+            var infoEl = document.getElementById('image-info');
+            if (infoEl) {
+                infoEl.textContent = imageInfo;
+            }
         }
 
         // Function to send data to the PHP script
         function sendData() {
+            if (!startPoint || !endPoint) {
+                alert('Please draw a rectangle first.');
+                return;
+            }
             // Get the start and end points of the rectangle
-            startPoint = JSON.stringify({ x: startPoint.x, y: startPoint.y });
-            endPoint = JSON.stringify({ x: endPoint.x, y: endPoint.y });
-            dimensions = JSON.stringify({width: img.width, height: img.height})
+            var startPointJson = JSON.stringify({ x: Math.min(startPoint.x, endPoint.x), y: Math.min(startPoint.y, endPoint.y) });
+            var endPointJson = JSON.stringify({ x: Math.max(startPoint.x, endPoint.x), y: Math.max(startPoint.y, endPoint.y) });
+            var dimensions = JSON.stringify({width: img.width, height: img.height})
             var selectedImage = '<?php echo $IMAGE ?>';  // Access the PHP variable
             var evaluatorName = '<?php echo $evaluatorName ?>';  // Access the PHP variable
             var assessmentCount = '<?php echo $assessmentCount ?>';  // Access the PHP variable
@@ -292,8 +299,8 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
             // Create a FormData object and append the start and end points
             var formData = new FormData();
             formData.append('selectedImage', selectedImage);
-            formData.append('startPoint', startPoint);
-            formData.append('endPoint', endPoint);
+            formData.append('startPoint', startPointJson);
+            formData.append('endPoint', endPointJson);
             formData.append('dimensions', dimensions);
             formData.append('evaluatorName', evaluatorName);
             formData.append('assessmentCount', assessmentCount);
@@ -311,12 +318,13 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
                     // Update the result element with the response
                     document.getElementById('result').innerHTML = xhr.responseText;
                     alert(xhr.responseText);
+                    if (xhr.responseText.indexOf('✅') !== -1) {
+                        window.parent.enableSummaryTab();
+                    }
                 }
             };
 
             xhr.send(formData);
-
-            window.parent.enableSummaryTab();
         }
 
 

@@ -1,9 +1,6 @@
 <?php
 require_once 'auth_check.php';
 
-// Start the session
-session_start();
-
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
 
@@ -224,6 +221,10 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
         // Function to send data to the PHP script
         function compute() {
+            if (!rectHeight || rectHeight <= 0 || !Height || Height <= 0) {
+                alert('Please draw a 1cm rectangle on the image first.');
+                return;
+            }
             // Get the scale
             var scale = rectHeight / Height;
 
@@ -231,15 +232,16 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', './PHP/save_scale.php');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                button = document.getElementById('compute-button');
+                button.style.backgroundColor = 'lightgreen';
+                button.textContent = 'Success';
+                button.style.display = 'none';
+                document.getElementById('rectangle-coordinates').textContent = 'You can go to the next tab (click >> button)';
+
+                window.parent.enableTissueTab();
+            };
             xhr.send('scale=' + scale);
-
-            button = document.getElementById('compute-button');
-            button.style.backgroundColor = 'lightgreen';
-            button.textContent = 'Success';
-            button.style.display = 'none';
-            document.getElementById('rectangle-coordinates').textContent = 'You can go to the next tab (click >> button)';
-
-            window.parent.enableTissueTab();
         }
 
         // Add event listeners to the canvas

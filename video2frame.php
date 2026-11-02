@@ -1,6 +1,5 @@
 <?php
 require_once 'auth_check.php';
-session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,11 +77,15 @@ session_start();
         });
 
         function stepForward() {
-            videoPlayer.currentTime += frameTime;
+            if (videoPlayer.duration) {
+                videoPlayer.currentTime = Math.min(videoPlayer.duration, videoPlayer.currentTime + frameTime);
+            } else {
+                videoPlayer.currentTime += frameTime;
+            }
         }
 
         function stepBackward() {
-            videoPlayer.currentTime -= frameTime;
+            videoPlayer.currentTime = Math.max(0, videoPlayer.currentTime - frameTime);
         }
 
         let allowCapture = true;
@@ -136,7 +139,8 @@ session_start();
                 }
             };
 
-            const imgData = 'img=' + encodeURIComponent(img.src) + '&name=' + encodeURIComponent(videoName);
+            const timeTag = '_' + Math.round(videoPlayer.currentTime * 1000) + 'ms';
+            const imgData = 'img=' + encodeURIComponent(img.src) + '&name=' + encodeURIComponent(videoName) + '&time=' + encodeURIComponent(timeTag);
             xhr.send(imgData);
         }
 

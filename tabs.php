@@ -1,7 +1,6 @@
 <?php
 require_once 'auth_check.php';
 
-    session_start();
     // Check if the image has been submitted
     if (isset($_SESSION['button'])){
         // Retrieve the selected tab 
@@ -358,7 +357,7 @@ require_once 'auth_check.php';
             </div>
         <?php } ?>
         <div class="content">
-            <iframe src="./summary.php" width="100%" frameborder="0"></iframe>
+            <iframe id="summary-iframe" src="./summary.php" width="100%" frameborder="0"></iframe>
         </div>
 
         <div class="navigation-arrows">
@@ -424,6 +423,10 @@ require_once 'auth_check.php';
 
     function enableSummaryTab() {
         const tabSummary = document.getElementById('tab-summary');
+        const summaryIframe = document.getElementById('summary-iframe');
+        if (summaryIframe && summaryIframe.contentWindow) {
+            summaryIframe.contentWindow.location.reload();
+        }
 
         // Enable the next tab and remove the "disabled" class
         tabSummary.classList.remove('disabled');

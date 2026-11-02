@@ -1,7 +1,5 @@
 <?php
 require_once 'auth_check.php';
-// Start the session
-session_start();
 
 // Specify the path to the echographies folder
 $echographiesPath = 'Upload/';
@@ -21,7 +19,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
     // echo $caseButton;
 
     // Construct the image path
-    $imagePath = $echographiesPath .'/'. $IMAGE;
+    $imagePath = $echographiesPath . $IMAGE;
 
     // Specify the path to the DATA folder
     $dataPath = 'DATA/'.$user.'/'.$caseButton.'/';
@@ -31,7 +29,7 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
     // unset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount']);
 
     // Get a list of files in the DATA directory
-    $files = scandir($dataPath);
+    $files = is_dir($dataPath) ? scandir($dataPath) : array();
 
     // echo "<script>console.log('".json_encode($files)."');</script>";
 
@@ -49,11 +47,15 @@ if (isset($_SESSION['IMG'], $_SESSION['EvName'], $_SESSION['EvCount'])) {
 
 // Function to read the last line of a file and extract columns
 function readLastLine($filePath, $ind) {
-    $lines = file($filePath);
+    if (!is_file($filePath)) {
+        return array();
+    }
+    $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $reversedLines = array_reverse($lines);
-    
-    $line = $reversedLines[$ind];
-    $line = trim($line); // Remove newline characters and any leading/trailing whitespaces
+    if (!isset($reversedLines[$ind])) {
+        return array();
+    }
+    $line = trim($reversedLines[$ind]); // Remove newline characters and any leading/trailing whitespaces
     $columns = explode(";", $line);
     return $columns;
 }
@@ -220,7 +222,7 @@ function readLastLine($filePath, $ind) {
             $filenameWithoutExtension = pathinfo($imagePath, PATHINFO_FILENAME);
 
             // Create the new filename for the second image
-            $imagePath2 = "Upload" . $filenameWithoutExtension . "-Bone.png";
+            $imagePath2 = "Upload/" . $filenameWithoutExtension . "-Bone.png";
             // echo "<script>console.log('".json_encode($imagePath)."');</script>";
             ?>
             <!-- <div id="image-container2" class="img">
@@ -242,12 +244,29 @@ function readLastLine($filePath, $ind) {
                     </td>
                     <?php
                     if ($file == 'borders.txt') {
+                        if ($caseButton == 'menisco') {
+                            $columns0 = readLastLine($dataPath . '/' . $file, 2);
+                            $columns1 = readLastLine($dataPath . '/' . $file, 1);
+                            $columns2 = readLastLine($dataPath . '/' . $file, 0);
+                            echo "<td>" . ($columns0[3] ?? '') . '; ' . ($columns1[3] ?? '') . '; ' . ($columns2[3] ?? '') . "</td>";
+                        } else {
+                            $columns1 = readLastLine($dataPath . '/' . $file, 1);
+                            $columns2 = readLastLine($dataPath . '/' . $file, 0);
+                            echo "<td>" . ($columns1[3] ?? '') . '; ' . ($columns2[3] ?? '') . "</td>";
+                        }
+                    } elseif ($caseButton == 'sarcopenia' && $file == 'tissue-quality.txt') {
+                        $columns0 = readLastLine($dataPath . '/' . $file, 2);
                         $columns1 = readLastLine($dataPath . '/' . $file, 1);
                         $columns2 = readLastLine($dataPath . '/' . $file, 0);
-                        echo "<td>" . $columns1[3] . '; ' . $columns2[3] . "</td>";
+                        echo "<td>" . ($columns0[3] ?? '') . '; ' . ($columns1[3] ?? '') . '; ' . ($columns2[3] ?? '') . "</td>";
+                    } elseif ($caseButton == 'sarcopenia' && $file == 'morphology.txt') {
+                        $columns0 = readLastLine($dataPath . '/' . $file, 2);
+                        $columns1 = readLastLine($dataPath . '/' . $file, 1);
+                        $columns2 = readLastLine($dataPath . '/' . $file, 0);
+                        echo "<td>" . ($columns0[2] ?? '') . '; ' . ($columns1[2] ?? '') . '; ' . ($columns2[2] ?? '') . "</td>";
                     } else {
                         $columns = readLastLine($dataPath . '/' . $file, 0);
-                        echo "<td>" . $columns[2] . "</td>";
+                        echo "<td>" . ($columns[2] ?? '') . "</td>";
                     }
                     ?>
                 </tr>
@@ -264,7 +283,7 @@ function readLastLine($filePath, $ind) {
             <h3>Create and Download your files</h3>
             <?php
             $dir = $dataPath; // replace with your directory
-            $files = scandir($dir);
+            $files = is_dir($dir) ? scandir($dir) : array();
 
             foreach ($files as $file) {
                 if ($file != '.' && $file != '..') {
@@ -341,10 +360,16 @@ function readLastLine($filePath, $ind) {
                 alert('Borders Variables:\nDate;File;Position;Ev;Name;nº;GLCM_Contrast;GLCM_SumAverage;GLCM_SoSVariance;GLCM_DVariance;GLCM_Correlation;GLCM_IDMoment;GLDS_Homogeneity;GLDS_Contrast;GLDS_ASM;GLDS_Entopy;GLDS_Mean;haar_mean;haar_variance;geometry');
                 break;
             case 'morphology.txt':
-                alert('Morphology Variables:\nDate;File;Ev;Name;Count;Max_width;Min_width;mean;Desvest;Ratio;Geometry');
+                <?php if ($caseButton == 'nerve-transversal' || $caseButton == 'muscle') { ?>
+                    alert('Morphology Variables:\nDate;File;Ev;Name;Count;Area;Perimeter;Max_width;Max_height;Ratio;Geometry');
+                <?php } elseif ($caseButton == 'sarcopenia') { ?>
+                    alert('Morphology Variables:\nDate;File;Ev;Name;Structure;Count;Area;Perimeter;Max_width;Max_height;Ratio;Geometry');
+                <?php } else { ?>
+                    alert('Morphology Variables:\nDate;File;Ev;Name;Count;Max_width;Min_width;mean;Desvest;Ratio;Geometry');
+                <?php } ?>
                 break;
             case 'bone.txt':
-                alert('Bone Variables:\nDate;File;Ev;Name;nº;number;Area;Perimeter;convexity;homogeneity;contrast;ASM;geometry');
+                alert('Bone Variables:\nDate;File;Ev;Name;nº;number;Area;Perimeter;convexity;homogeneity;contrast;correlation;geometry');
                 break;
         }
         
