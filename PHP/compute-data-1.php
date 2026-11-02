@@ -56,14 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "/home/marta/appFlask/venv/bin/python3";
+    $venv_python = file_exists("/home/marta/appFlask/venv/bin/python3") ? "/home/marta/appFlask/venv/bin/python3" : "python3";
+    $script_path = file_exists("/var/www/html/Python/tissue-quality.py") ? "/var/www/html/Python/tissue-quality.py" : (__DIR__ . "/../Python/tissue-quality.py");
 
     // Build the command to execute the Python script using the virtual environment's Python interpreter
     if($caseButton == 'sarcopenia') {
-        $command = "$venv_python /var/www/html/Python/tissue-quality.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $c1 $d1 $c2 $d2 $height $width $evaluatorName $assessmentCount $recto $vasto $grasa $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $x1, $y1, $x2, $y2, $a1, $b1, $a2, $b2, $c1, $d1, $c2, $d2,
+            $height, $width, $evaluatorName, $assessmentCount, $recto, $vasto, $grasa, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_path) . " " . implode(' ', $args) . " 2>&1";
     }
     else {
-        $command = "$venv_python /var/www/html/Python/tissue-quality.py $Name $x1 $y1 $x2 $y2 $height $width $evaluatorName $assessmentCount $selectedAssessment $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $x1, $y1, $x2, $y2, $height, $width,
+            $evaluatorName, $assessmentCount, $selectedAssessment, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_path) . " " . implode(' ', $args) . " 2>&1";
     }
     // echo $command."<br>";
     // Execute the command and capture the output and errors

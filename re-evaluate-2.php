@@ -1,18 +1,18 @@
 <?php
 require_once 'auth_check.php';
 
-session_start();
-
 // Specify the path to the Upload folder
 $uploadPath = 'Upload/';
 
-// Get all files in the Upload folder
-$files = glob($uploadPath . '*');
-
-// Delete each file
-foreach ($files as $file) {
-    if (is_file($file)) {
-        unlink($file);
+// Delete only the current session's uploaded image and bone derivative
+if (isset($_SESSION['IMG']) && !empty($_SESSION['IMG'])) {
+    $currentFile = $uploadPath . basename($_SESSION['IMG']);
+    if (is_file($currentFile)) {
+        unlink($currentFile);
+    }
+    $boneFile = $uploadPath . pathinfo($_SESSION['IMG'], PATHINFO_FILENAME) . '-Bone.png';
+    if (is_file($boneFile)) {
+        unlink($boneFile);
     }
 }
 

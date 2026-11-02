@@ -21,22 +21,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $width = $Size->width;
     $height = $Size->height;
 
+    if (isset($_POST['coordinates']) && !empty($_POST['coordinates'])) {
+        file_put_contents(__DIR__ . '/polygon.txt', $_POST['coordinates'], LOCK_EX);
+    }
+
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "/home/marta/appFlask/venv/bin/python3";
+    $venv_python = file_exists("/home/marta/appFlask/venv/bin/python3") ? "/home/marta/appFlask/venv/bin/python3" : "python3";
+    $script_trans = file_exists("/var/www/html/Python/morphologyTrans.py") ? "/var/www/html/Python/morphologyTrans.py" : (__DIR__ . "/../Python/morphologyTrans.py");
+    $script_long = file_exists("/var/www/html/Python/morphology.py") ? "/var/www/html/Python/morphology.py" : (__DIR__ . "/../Python/morphology.py");
 
     // Build the command to execute the Python script
     if ($caseButton == 'nerve-transversal'){
         // Build the command to execute the Python script using the virtual environment's Python interpreter
-        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $height, $width, $evaluatorName, $assessmentCount, $selectedAssessment, $Scale, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_trans) . " " . implode(' ', $args) . " 2>&1";
     }
-    if ($caseButton == 'muscle') {
-        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+    elseif ($caseButton == 'muscle') {
+        $args = array_map('escapeshellarg', [
+            $Name, $height, $width, $evaluatorName, $assessmentCount, $selectedAssessment, $Scale, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_trans) . " " . implode(' ', $args) . " 2>&1";
     }
-    if ($caseButton == 'sarcopenia') {
-        $command = "$venv_python /var/www/html/Python/morphologyTrans.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $estructura $user $caseButton 2>&1";
+    elseif ($caseButton == 'sarcopenia') {
+        $args = array_map('escapeshellarg', [
+            $Name, $height, $width, $evaluatorName, $assessmentCount, $selectedAssessment, $Scale, $estructura, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_trans) . " " . implode(' ', $args) . " 2>&1";
     }
     else{
-        $command = "$venv_python /var/www/html/Python/morphology.py $Name $height $width $evaluatorName $assessmentCount $selectedAssessment $Scale $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $height, $width, $evaluatorName, $assessmentCount, $selectedAssessment, $Scale, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_long) . " " . implode(' ', $args) . " 2>&1";
     }
     // echo $command;
     // Execute the command and capture the output and errors

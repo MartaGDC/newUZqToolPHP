@@ -64,13 +64,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo $Name.' '.$x1.' '.$y1.' '.$x2.' '.$y2.' '.$a1.' '.$b1.' '.$a2.' '.$b2.' '.$height.' '.$width.' '.$evaluatorName.' '.$assessmentCount.' '.$AssessmentUp.' '.$AssessmentDown.'<br>'; 
 
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "/home/marta/appFlask/venv/bin/python3";
+    $venv_python = file_exists("/home/marta/appFlask/venv/bin/python3") ? "/home/marta/appFlask/venv/bin/python3" : "python3";
+    $script_path = file_exists("/var/www/html/Python/borders.py") ? "/var/www/html/Python/borders.py" : (__DIR__ . "/../Python/borders.py");
 
     // Build the command to execute the Python script using the virtual environment's Python interpreter
     if($caseButton == 'menisco'){
-        $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $c1 $d1 $c2 $d2 $height $width $evaluatorName $assessmentCount $menisco $femur $tibia $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $x1, $y1, $x2, $y2, $a1, $b1, $a2, $b2, $c1, $d1, $c2, $d2,
+            $height, $width, $evaluatorName, $assessmentCount, $menisco, $femur, $tibia, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_path) . " " . implode(' ', $args) . " 2>&1";
     } else {
-        $command = "$venv_python /var/www/html/Python/borders.py $Name $x1 $y1 $x2 $y2 $a1 $b1 $a2 $b2 $height $width $evaluatorName $assessmentCount $AssessmentUp $AssessmentDown $user $caseButton 2>&1";
+        $args = array_map('escapeshellarg', [
+            $Name, $x1, $y1, $x2, $y2, $a1, $b1, $a2, $b2,
+            $height, $width, $evaluatorName, $assessmentCount, $AssessmentUp, $AssessmentDown, $user, $caseButton
+        ]);
+        $command = "$venv_python " . escapeshellarg($script_path) . " " . implode(' ', $args) . " 2>&1";
     }
     // Execute the command and capture the output and errors
     exec($command, $output, $returnCode);

@@ -1,8 +1,6 @@
 <?php
 require_once 'auth_check.php';
 
-session_start();
-
 
 // Get the filename without the extension
 $filenameWithoutExtension = pathinfo($_SESSION['IMG'], PATHINFO_FILENAME);

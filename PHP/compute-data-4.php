@@ -28,10 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo $Name.' '.$x1.' '.$y1.' '.$x2.' '.$y2.' '.$height.' '.$width.' '.$evaluatorName.' '.$assessmentCount.' '.$Threshold.' '.$selectedAssessment.'<br>';
 
     // Path to the Python interpreter in the virtual environment
-    $venv_python = "/home/marta/appFlask/venv/bin/python3";
+    $venv_python = file_exists("/home/marta/appFlask/venv/bin/python3") ? "/home/marta/appFlask/venv/bin/python3" : "python3";
+    $script_path = file_exists("/var/www/html/Python/bone.py") ? "/var/www/html/Python/bone.py" : (__DIR__ . "/../Python/bone.py");
 
     // Build the command to execute the Python script using the virtual environment's Python interpreter
-    $command = "$venv_python /var/www/html/Python/bone.py $Name $x1 $y1 $x2 $y2 $height $width $evaluatorName $assessmentCount $Threshold $selectedAssessment $Scale $user $caseButton 2>&1";
+    $args = array_map('escapeshellarg', [
+        $Name, $x1, $y1, $x2, $y2, $height, $width,
+        $evaluatorName, $assessmentCount, $Threshold, $selectedAssessment, $Scale, $user, $caseButton
+    ]);
+    $command = "$venv_python " . escapeshellarg($script_path) . " " . implode(' ', $args) . " 2>&1";
     
     // Execute the command and capture the output and errors
     exec($command, $output, $returnCode);
