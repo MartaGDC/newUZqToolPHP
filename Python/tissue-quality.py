@@ -55,29 +55,29 @@ else:
 #print(Name, _x1, _y2, _width, Eval)
 
 # Path to the image
-Imgspath = "/var/www/html/Upload"
+BASE_DIR = "/var/www/html" if os.path.exists("/var/www/html/Upload") else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+Imgspath = os.path.join(BASE_DIR, "Upload")
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
 image = io.imread(Selected, as_gray=True)
-image = (image * 255).astype(np.uint8)
+if np.issubdtype(image.dtype, np.floating):
+    image = np.clip(np.rint(image * 255), 0, 255).astype(np.uint8)
+elif image.dtype == np.uint16:
+    image = (image // 256).astype(np.uint8)
+else:
+    image = np.asarray(image, dtype=np.uint8)
 
 height, width = image.shape
-x1 = int(_x1 * width / _width)
-x2 = int(_x2 * width / _width)
-y1 = int(_y1 * height / _height)
-y2 = int(_y2 * height / _height)
+x1, x2 = sorted((int(round(_x1 * width / _width)), int(round(_x2 * width / _width))))
+y1, y2 = sorted((int(round(_y1 * height / _height)), int(round(_y2 * height / _height))))
 
 if echo_type == 'sarcopenia':
-    a1 = int(_a1*width/_width)
-    a2 = int(_a2*width/_width)
-    b1 = int(_b1*height/_height)
-    b2 = int(_b2*height/_height)
+    a1, a2 = sorted((int(round(_a1*width/_width)), int(round(_a2*width/_width))))
+    b1, b2 = sorted((int(round(_b1*height/_height)), int(round(_b2*height/_height))))
 
-    c1 = int(_c1*width/_width)
-    c2 = int(_c2*width/_width)
-    d1 = int(_d1*height/_height)
-    d2 = int(_d2*height/_height)
+    c1, c2 = sorted((int(round(_c1*width/_width)), int(round(_c2*width/_width))))
+    d1, d2 = sorted((int(round(_d1*height/_height)), int(round(_d2*height/_height))))
 
 # Reshape the image to the ROI
 if echo_type == "sarcopenia":
@@ -92,12 +92,9 @@ else:
     Point = [[x1,y1],[x2,y2]]
     ROI = image[y1:y2, x1:x2]
 
-folder = "/var/www/html/DATA/"+user
-if not os.path.exists(folder):
-    os.mkdir(folder)
+folder = os.path.join(BASE_DIR, "DATA", user)
 subfolder = os.path.join(folder, echo_type)
-if not os.path.exists(subfolder):
-    os.mkdir(subfolder)
+os.makedirs(subfolder, exist_ok=True)
 path = os.path.join(subfolder,"tissue-quality.txt")
 # print(path)
 

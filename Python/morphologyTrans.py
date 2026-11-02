@@ -34,36 +34,44 @@ else:
     user = sys.argv[8]
 
 # Cargamos puntos del fichero
-polygon_path = "/var/www/html/PHP/polygon.txt"
+BASE_DIR = "/var/www/html" if os.path.exists("/var/www/html/Upload") else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+polygon_path = os.path.join(BASE_DIR, "PHP", "polygon.txt")
 with open(polygon_path, 'r') as file:
     points = file.readlines()[1:]
     _x = []
     _y = []
     for line in points:
+        if not line.strip():
+            continue
         values = line.strip().split('\t')
         _x.append(float(values[0]))
         _y.append(float(values[1]))
 
 # Path to the image
-Imgspath = "/var/www/html/Upload"
+Imgspath = os.path.join(BASE_DIR, "Upload")
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
 image = io.imread(Selected, as_gray=True)
-image = (image * 255).astype(np.uint8)  # Normalize to 0-255 range
+if np.issubdtype(image.dtype, np.floating):
+    image = np.clip(np.rint(image * 255), 0, 255).astype(np.uint8)  # Normalize to 0-255 range
+elif image.dtype == np.uint16:
+    image = (image // 256).astype(np.uint8)
+else:
+    image = np.asarray(image, dtype=np.uint8)
 
 # Transform the cordinates into true image
 height, width = image.shape
 
-x = list(map(int, [_xval * width / _width for _xval in _x]))
-y = list(map(int, [_yval * height / _height for _yval in _y]))
+x = [_xval * width / _width for _xval in _x]
+y = [_yval * height / _height for _yval in _y]
 
 # Set scale for each image
 
 scale = _scale*height
 #print(scale)
 
-perimeter = np.transpose([x,y])
+perimeter = np.transpose([[int(round(v)) for v in x], [int(round(v)) for v in y]])
 
 # calculate area
 def PolyArea(x_coord,y_coord):
@@ -82,11 +90,11 @@ def PolyPer(x, y):
     
     return perimeter
     
-area = PolyArea(x,y)/scale**2
-per = PolyPer(x,y)/scale
-max_width = (np.max(x)-np.min(x))/scale
-max_height = (np.max(y)-np.min(y))/scale
-ratio = max_height/max_width
+area = PolyArea(x,y)/scale**2 if scale > 0 else 0.0
+per = PolyPer(x,y)/scale if scale > 0 else 0.0
+max_width = (np.max(x)-np.min(x))/scale if scale > 0 else 0.0
+max_height = (np.max(y)-np.min(y))/scale if scale > 0 else 0.0
+ratio = max_height/max_width if max_width != 0 else 0.0
 
 # Para el perímetro
 perimeter_list = perimeter.tolist()
@@ -113,7 +121,8 @@ print ("The shape processing has been successfully completed")
 
 
 # Save data
-path = os.path.join("/var/www/html/DATA/",user,echo_type,"morphology.txt")
+path = os.path.join(BASE_DIR, "DATA", user, echo_type, "morphology.txt")
+os.makedirs(os.path.dirname(path), exist_ok=True)
 with open(path,'a') as file:
     line = ";".join(map(str, save_var))
     file.writelines(line+'\n')

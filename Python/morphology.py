@@ -24,29 +24,37 @@ user = sys.argv[8]
 echo_type = sys.argv[9]
 
 # Cargamos puntos del fichero
-polygon_path = "/var/www/html/PHP/polygon.txt"
+BASE_DIR = "/var/www/html" if os.path.exists("/var/www/html/Upload") else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+polygon_path = os.path.join(BASE_DIR, "PHP", "polygon.txt")
 with open(polygon_path, 'r') as file:
     points = file.readlines()[1:]
     _x = []
     _y = []
     for line in points:
+        if not line.strip():
+            continue
         values = line.strip().split('\t')
         _x.append(float(values[0]))
         _y.append(float(values[1]))
 
 # Path to the image
-Imgspath = "/var/www/html/Upload"
+Imgspath = os.path.join(BASE_DIR, "Upload")
 Selected = os.path.join(Imgspath, Name)
 
 # Transform the coordinates into the true image
 image = io.imread(Selected, as_gray=True)
-image = (image * 255).astype(np.uint8)  # Normalize to 0-255 range
+if np.issubdtype(image.dtype, np.floating):
+    image = np.clip(np.rint(image * 255), 0, 255).astype(np.uint8)  # Normalize to 0-255 range
+elif image.dtype == np.uint16:
+    image = (image // 256).astype(np.uint8)
+else:
+    image = np.asarray(image, dtype=np.uint8)
 
 # Transform the cordinates into true image
 height, width = image.shape
 
-x = list(map(int, [_xval * width / _width for _xval in _x]))
-y = list(map(int, [_yval * height / _height for _yval in _y]))
+x = [int(round(_xval * width / _width)) for _xval in _x]
+y = [int(round(_yval * height / _height)) for _yval in _y]
 
 # Set scale for each image
 
@@ -61,31 +69,31 @@ dy1=[]
 ms2=[]
 dx2=[]
 dy2=[]
-aux=False
 for i in range(len(perimeter)):
-    m = (perimeter[i][1]-perimeter[i-1][1])/(perimeter[i][0]-perimeter[i-1][0]) if (perimeter[i][0]-perimeter[i-1][0]) != 0 else 100
+    dx_seg = perimeter[i][0] - perimeter[i-1][0]
+    m = (perimeter[i][1]-perimeter[i-1][1])/dx_seg if dx_seg != 0 else 100
     xpos=[perimeter[i-1,0],perimeter[i,0]]
 
     ypos=[perimeter[i-1,1],perimeter[i,1]]
 
-    if np.abs(m)>2:
-        aux=not aux
-    else:
-        if aux==True:
+    if np.abs(m)<=2:
+        if dx_seg > 0:
             ms1.append(m)
             dx1.append(xpos)
             dy1.append(ypos)
-        if aux==False:
+        elif dx_seg < 0:
             ms2.append(m)
             dx2.append(xpos[::-1])
             dy2.append(ypos[::-1])
 
-dx2=np.array(dx2[::-1])
-dx1=np.array(dx1)
-dy2=np.array(dy2[::-1])
-dy1=np.array(dy1)
-ms2=np.array(ms2[::-1])
-ms1=np.array(ms1)
+order1 = np.argsort([seg[0] for seg in dx1])
+order2 = np.argsort([seg[0] for seg in dx2])
+dx1=np.array(dx1)[order1]
+dy1=np.array(dy1)[order1]
+ms1=np.array(ms1)[order1]
+dx2=np.array(dx2)[order2]
+dy2=np.array(dy2)[order2]
+ms2=np.array(ms2)[order2]
 
 
 ini=max(np.min(dx1[:,0]),np.min(dx2[:,0]))
@@ -104,18 +112,18 @@ for i,el in enumerate(muestra):
     try: in2=w2.index(False)-1
     except ValueError: in2=-1
 
-    thickness[i]=distance(el,ms2[in2],dx2[in2,0],dy2[in2,0],ms1[in1],dx1[in1,0],dy1[in1,0])
+    thickness[i]=abs(distance(el,ms2[in2],dx2[in2,0],dy2[in2,0],ms1[in1],dx1[in1,0],dy1[in1,0]))
 
 
-w_M=max(thickness)/scale
+w_M=max(thickness)/scale if scale > 0 else 0.0
 
-w_m=min(thickness)/scale
+w_m=min(thickness)/scale if scale > 0 else 0.0
 
-mean=np.mean(thickness)/scale
+mean=np.mean(thickness)/scale if scale > 0 else 0.0
 
-desv=np.std(thickness)/(scale*mean)
+desv=np.std(thickness)/scale if scale > 0 else 0.0
 
-ratio=w_m/w_M
+ratio=w_m/w_M if w_M != 0 else 0.0
 
 # Para el perímetro
 perimeter_list = perimeter.tolist()
@@ -138,7 +146,8 @@ print ("The shape processing has been successfully completed")
 
 
 # Save data
-path = os.path.join("/var/www/html/DATA/",user,echo_type,"morphology.txt")
+path = os.path.join(BASE_DIR, "DATA", user, echo_type, "morphology.txt")
+os.makedirs(os.path.dirname(path), exist_ok=True)
 with open(path,'a') as file:
     line = ";".join(map(str, save_var))
     file.writelines(line+'\n')
