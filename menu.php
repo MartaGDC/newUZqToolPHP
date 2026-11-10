@@ -184,33 +184,36 @@ if (isset($_GET['button'])) {
         .subprojects-container {
             margin-top: 10px;
             position: relative;
-            z-index: 8;
+            z-index: 9;
         }
         .subprojects-container > .button {
             position: relative;
-            z-index: 9;
+            z-index: 10;
             width: 250px;
         }
 
         .subprojects-container:nth-child(2) {
-            z-index: 7;
+            z-index: 8;
         }
         .subprojects-container:nth-child(3) {
-            z-index: 6;
+            z-index: 7;
         }
         .subprojects-container:nth-child(4) {
-            z-index: 5;
+            z-index: 6;
         }
         .subprojects-container:nth-child(5) {
-            z-index: 4;
+            z-index: 5;
         }
         .subprojects-container:nth-child(6) {
-            z-index: 3;
+            z-index: 4;
         }
         .subprojects-container:nth-child(7) {
-            z-index: 2;
+            z-index: 3;
         }
         .subprojects-container:nth-child(8) {
+            z-index: 2;
+        }
+        .subprojects-container:nth-child(9) {
             z-index: 1;
         }
 
@@ -456,8 +459,8 @@ if (isset($_GET['button'])) {
                             <?php endif; ?>
                             <?php if ($user == "mmu" || $user == "mgd" || $user == "pfm" ): ?>
                                 <div class="subprojects-container">
-                                    <a class="button subproject-option" data-target="polea" style="z-index:3;">Polea</a>
-                                    <div class="subprojects" style="z-index:2;" id="poleaDropdown">
+                                    <a class="button subproject-option" data-target="polea" style="z-index:4;">Polea</a>
+                                    <div class="subprojects" style="z-index:3;" id="poleaDropdown">
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/polea_longitudinal?token=<?= urlencode($token) ?>">Longitudinal</a>
                                     </div>
                                 </div>
@@ -469,8 +472,8 @@ if (isset($_GET['button'])) {
                             <?php endif; ?>
                             <?php if ($user == "mmu" || $user == "mgd" || $user == "jpr"  || $user == "iac"): ?>
                                 <div class="subprojects-container">
-                                    <a class="button subproject-option" data-target="rotuliano" style="z-index:2;">Tendón rotuliano</a>
-                                    <div class="subprojects" style="z-index:1;" id="rotulianoDropdown">
+                                    <a class="button subproject-option" data-target="rotuliano" style="z-index:3;">Tendón rotuliano</a>
+                                    <div class="subprojects" style="z-index:2;" id="rotulianoDropdown">
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/rotuliano_longitudinal?token=<?= urlencode($token) ?>">Tendón rotuliano longitudinal</a>
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/rotuliano_transversal?token=<?= urlencode($token) ?>">Tendón rotuliano transversal</a>
                                     </div>
@@ -481,10 +484,20 @@ if (isset($_GET['button'])) {
                             <?php endif; ?>
                             <?php if ($user == "mmu" || $user == "mgd" || $user == "iac" || $user == 'ebg' || $user == 'jpr' || $user == 'pfm' || $user == 'jmp' || $user == 'gcf' || $user == 'acm' || $user == 'ira') : ?>
                                 <div class="subprojects-container">
-                                    <a class="button subproject-option" data-target="unita" style="z-index:1;">UNITA-Cartílago</a>
-                                    <div class="subprojects" style="z-index:0;" id="unitaDropdown">
+                                    <a class="button subproject-option" data-target="unita" style="z-index:2;">UNITA-Cartílago</a>
+                                    <div class="subprojects" style="z-index:1;" id="unitaDropdown">
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/unita_cartilagoLong?token=<?= urlencode($token) ?>">Longitudinal</a>
                                         <a class="button" style="width:300px;" href="<?= $host ?>:5004/unita_cartilagoTrans?token=<?= urlencode($token) ?>">Transversal</a>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($user == "mmu" || $user == "mgd" || $user == "iac" || $user == "ppa"):?>
+                                <div class="subprojects-container">
+                                    <a class="button subproject-option" data-target="abdomen" style="z-index:1;">Abdomen</a>
+                                    <div class="subprojects" style="z-index:0;" id="abdomenDropdown">
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_lineaMedia?token=<?= urlencode($token) ?>">Transversal línea media</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_spiegel?token=<?= urlencode($token) ?>">Transversal Spiegel</a>
                                     </div>
                                 </div>
                             <?php endif; ?>
