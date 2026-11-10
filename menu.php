@@ -495,9 +495,9 @@ if (isset($_GET['button'])) {
                                 <div class="subprojects-container">
                                     <a class="button subproject-option" data-target="abdomen" style="z-index:1;">Abdomen</a>
                                     <div class="subprojects" style="z-index:0;" id="abdomenDropdown">
-                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_lineaMedia?token=<?= urlencode($token) ?>">Transversal línea media</a>
-                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
-                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/trans_spiegel?token=<?= urlencode($token) ?>">Transversal Spiegel</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/abd_trans_lineaMedia?token=<?= urlencode($token) ?>">Transversal línea media</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/abd_trans_recto?token=<?= urlencode($token) ?>">Transversal recto</a>
+                                        <a class="button" style="width:300px;" href="<?= $host ?>:5004/abd_trans_spiegel?token=<?= urlencode($token) ?>">Transversal Spiegel</a>
                                     </div>
                                 </div>
                             <?php endif; ?>
